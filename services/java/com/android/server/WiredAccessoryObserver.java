@@ -39,13 +39,11 @@ import java.io.FileNotFoundException;
 class WiredAccessoryObserver extends UEventObserver {
     private static final String TAG = WiredAccessoryObserver.class.getSimpleName();
     private static final boolean LOG = true;
-    private static final int MAX_AUDIO_PORTS = 4; /* h2w, dock, USB Audio & hdmi */
-    private static final String uEventInfo[][] = { {"DEVPATH=/devices/virtual/switch/h2w",
-                                                    "/sys/class/switch/h2w/state",
-                                                    "/sys/class/switch/h2w/name"},
-                                                   {"DEVPATH=/devices/virtual/switch/dock",
-                                                    "/sys/class/switch/dock/state",
-                                                    "/sys/class/switch/dock/name"},
+    private static final int MAX_AUDIO_PORTS = 3; /* h2w, USB Audio & hdmi */
+    private static final int MAX_AUDIO_PORTS_DOCK = 1;
+    private static final String uEventInfo[][] = { {"DEVPATH=/devices/virtual/switch/headset_sensor",
+                                                    "/sys/class/switch/headset_sensor/state",
+                                                    "/sys/class/switch/headset_sensor/name"},
                                                    {"DEVPATH=/devices/virtual/switch/usb_audio",
                                                     "/sys/class/switch/usb_audio/state",
                                                     "/sys/class/switch/usb_audio/name"},
