@@ -1708,6 +1708,26 @@ public class Camera {
         private static final String KEY_CAMERA_MODE = "camera-mode";
         private static final String KEY_VIDEO_HIGH_FRAME_RATE = "video-hfr";
 
+	/*
+    	 * KD 9/28 - Froyo camera scene mode options (several added)
+   	 */
+        public static final String KEY_DEF_SHARPNESS = "";
+        public static final String KEY_MIN_SHARPNESS = "";
+        public static final String KEY_DEF_CONTRAST = "";
+        public static final String KEY_MIN_CONTRAST = "";
+        public static final String KEY_DEF_BRIGHTNESS = "";
+        public static final String KEY_MIN_BRIGHTNESS = "";
+        public static final String KEY_DEF_SATURATION = "";
+        public static final String KEY_MIN_SATURATION = "";
+        private static final String KEY_BRIGHTNESS = "brightness";
+        private static final String KEY_MAX_BRIGHTNESS = "brightness-max";
+        private static final String KEY_DEFAULT_BRIGHTNESS = "brightness-def";
+        public static final String KEY_SUPPORTED_SCENE_DETECT = "";
+        public static final String KEY_SUPPORTED_WIDESCREEN = "";
+        public static final String WIDESCREEN_4_3 = "";
+        public static final String WIDESCREEN_5_3 = "";
+        public static final String KEY_WIDESCREEN = "none";
+
         // Parameter key suffix for supported values.
         private static final String SUPPORTED_VALUES_SUFFIX = "-values";
 
@@ -3164,6 +3184,46 @@ public class Camera {
          */
         public int getMaxSaturation(){
             return getInt(KEY_MAX_SATURATION);
+        }
+
+        /**
+         * Get brightness level
+         *
+         * @return brightness level
+         */
+        public int getBrightness(){
+            return getInt(KEY_BRIGHTNESS, 0);
+        }
+
+        /**
+         * Set brightness level
+         *
+         * @param brightness level
+         */
+        public void setBrightness(int brightness){
+            if((brightness < 0 ) || (brightness > getMaxBrightness()))
+                throw new IllegalArgumentException(
+                        "Invalid Brightness " + brightness);
+
+            set(KEY_BRIGHTNESS, String.valueOf(brightness));
+        }
+
+        /**
+         * Get Max Brightness Level
+         *
+         * @return max brightness level
+         */
+        public int getMaxBrightness(){
+            return getInt(KEY_MAX_BRIGHTNESS, 0);
+        }
+
+        /**
+         * Get default brightness level
+         * 
+         * @return default brightness level
+         */
+        public int getDefaultBrightness() {
+            return getInt(KEY_DEFAULT_BRIGHTNESS, 0);
         }
 
         /**

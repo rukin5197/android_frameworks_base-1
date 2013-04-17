@@ -53,6 +53,9 @@ const char CameraParameters::CAPTURE_MODE_PANORAMA[] = "panorama";
 const char CameraParameters::CONTINUOUS_AF_OFF[] = "caf-off";
 const char CameraParameters::CONTINUOUS_AF_ON[] = "caf-on";
 const char CameraParameters::KEY_CONTINUOUS_AF[] = "continuous-af";
+
+const char CameraParameters::KEY_CAF[] = "continuous-af";
+const char CameraParameters::KEY_SUPPORTED_CAF[] = "continuous-af-values";
 const char CameraParameters::KEY_CAPTURE_MODE[] = "capture-mode";
 const char CameraParameters::KEY_PICTURE_COUNT[] = "picture-count";
 const char CameraParameters::KEY_MAX_BURST_PICTURE_COUNT[] = "max-burst-picture-count";
@@ -127,12 +130,18 @@ const char CameraParameters::KEY_LENSSHADE[] = "lensshade";
 const char CameraParameters::KEY_SUPPORTED_LENSSHADE_MODES[] = "lensshade-values";
 const char CameraParameters::KEY_AUTO_EXPOSURE[] = "auto-exposure";
 const char CameraParameters::KEY_SUPPORTED_AUTO_EXPOSURE[] = "auto-exposure-values";
+const char CameraParameters::KEY_SUPPORTED_THUMBNAIL_SIZES[] = "jpeg-thumbnail-size-values";
+
 const char CameraParameters::KEY_DENOISE[] = "denoise";
 const char CameraParameters::KEY_SUPPORTED_DENOISE[] = "denoise-values";
 const char CameraParameters::KEY_SELECTABLE_ZONE_AF[] = "selectable-zone-af";
 const char CameraParameters::KEY_SUPPORTED_SELECTABLE_ZONE_AF[] = "selectable-zone-af-values";
 const char CameraParameters::KEY_FACE_DETECTION[] = "face-detection";
 const char CameraParameters::KEY_SUPPORTED_FACE_DETECTION[] = "face-detection-values";
+
+const char CameraParameters::KEY_SHUTTER_SOUND[] = "shutter-sound";
+const char CameraParameters::KEY_BRIGHTNESS_MODE[] = "brightness-mode";
+
 const char CameraParameters::KEY_MEMORY_COLOR_ENHANCEMENT[] = "mce";
 const char CameraParameters::KEY_SUPPORTED_MEM_COLOR_ENHANCE_MODES[] = "mce-values";
 const char CameraParameters::KEY_VIDEO_HIGH_FRAME_RATE[] = "video-hfr";
@@ -141,10 +150,10 @@ const char CameraParameters::KEY_REDEYE_REDUCTION[] = "redeye-reduction";
 const char CameraParameters::KEY_SUPPORTED_REDEYE_REDUCTION[] = "redeye-reduction-values";
 const char CameraParameters::KEY_HIGH_DYNAMIC_RANGE_IMAGING[] = "hdr";
 const char CameraParameters::KEY_SUPPORTED_HDR_IMAGING_MODES[] = "hdr-values";
-#ifndef SAMSUNG_CAMERA_HARDWARE
+//#ifndef SAMSUNG_CAMERA_HARDWARE
 const char CameraParameters::KEY_ISO_MODE[] = "iso";
 const char CameraParameters::KEY_SUPPORTED_ISO_MODES[] = "iso-values";
-#endif
+//#endif
 #endif
 #ifdef SAMSUNG_CAMERA_HARDWARE
 const char CameraParameters::KEY_METERING[] = "metering";
@@ -200,6 +209,9 @@ const char CameraParameters::EFFECT_AQUA[] = "aqua";
 const char CameraParameters::EFFECT_EMBOSS[] = "emboss";
 const char CameraParameters::EFFECT_SKETCH[] = "sketch";
 const char CameraParameters::EFFECT_NEON[] = "neon";
+const char CameraParameters::EFFECT_NEGATIVE_SEPIA[] = "negative-sepia";
+const char CameraParameters::EFFECT_PASTEL[] = "pastel";
+const char CameraParameters::EFFECT_BLUE[] = "blue";
 
 // Values for auto exposure settings.
 const char CameraParameters::TOUCH_AF_AEC_OFF[] = "touch-off";
@@ -257,7 +269,7 @@ const char CameraParameters::PIXEL_FORMAT_YUV420SP[] = "yuv420sp";
 const char CameraParameters::PIXEL_FORMAT_YUV420SP_ADRENO[] = "yuv420sp-adreno";
 #endif
 const char CameraParameters::PIXEL_FORMAT_YUV422I[] = "yuv422i-yuyv";
-const char CameraParameters::PIXEL_FORMAT_YUV420P[]  = "yuv420p";
+const char CameraParameters::PIXEL_FORMAT_YUV420P[] = "yuv420p";
 const char CameraParameters::PIXEL_FORMAT_RGB565[] = "rgb565";
 const char CameraParameters::PIXEL_FORMAT_RGBA8888[] = "rgba8888";
 const char CameraParameters::PIXEL_FORMAT_JPEG[] = "jpeg";
@@ -339,6 +351,25 @@ const char CameraParameters::KEY_MIN_SATURATION[] = "saturation-min";
 #else
 const char CameraParameters::KEY_MAX_SATURATION[] = "max-saturation";
 #endif
+//
+// KD 9/28 - Add parameters for Froyo camera in Triumph - should not break 
+// other cameras
+//
+const char CameraParameters::KEY_MAX_BRIGHTNESS[] = "max-brightness";
+const char CameraParameters::KEY_BRIGHTNESS[] = "brightness";
+const char CameraParameters::WIDESCREEN_4_3[] = "off";
+const char CameraParameters::WIDESCREEN_5_3[] = "off";
+const char CameraParameters::KEY_SUPPORTED_WIDESCREEN[] = "none";
+const char CameraParameters::KEY_WIDESCREEN[] = "widescreen";
+const char CameraParameters::KEY_DEF_SHARPNESS[] = "0";
+//const char CameraParameters::KEY_MIN_SHARPNESS[] = "0";
+const char CameraParameters::KEY_DEF_CONTRAST[] = "2";
+//const char CameraParameters::KEY_MIN_CONTRAST[] = "0";
+const char CameraParameters::KEY_DEF_SATURATION[] = "0";
+//const char CameraParameters::KEY_MIN_SATURATION[] = "0";
+const char CameraParameters::KEY_DEF_BRIGHTNESS[] = "2";
+const char CameraParameters::KEY_MIN_BRIGHTNESS[] = "0";
+// end
 
 //Values for DENOISE
 const char CameraParameters::DENOISE_OFF[] = "denoise-off";
@@ -379,6 +410,7 @@ const char CameraParameters::AE_BRACKET_HDR_OFF[] = "Off";
 const char CameraParameters::AE_BRACKET_HDR[] = "HDR";
 const char CameraParameters::AE_BRACKET[] = "AE-Bracket";
 
+#ifdef CAF_CAMERA_GB_REL
 static const char* portrait = "portrait";
 static const char* landscape = "landscape";
 
@@ -397,6 +429,7 @@ void CameraParameters::setOrientation(int orientation)
          set("orientation", landscape);
     }
 }
+#endif
 #endif
 
 
@@ -664,7 +697,9 @@ void CameraParameters::getVideoSize(int *width, int *height) const
 
 void CameraParameters::getSupportedVideoSizes(Vector<Size> &sizes) const
 {
-    const char *videoSizesStr = get(KEY_SUPPORTED_VIDEO_SIZES);
+    // HACK: we don't have this key
+    //const char *videoSizesStr = get(KEY_SUPPORTED_VIDEO_SIZES);
+    const char *videoSizesStr = get(KEY_SUPPORTED_PREVIEW_SIZES);
     parseSizesList(videoSizesStr, sizes);
 }
 

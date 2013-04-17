@@ -213,6 +213,10 @@ public:
     // The height (in pixels) of EXIF thumbnail in Jpeg picture.
     // Example value: "384". Read/write.
     static const char KEY_JPEG_THUMBNAIL_HEIGHT[];
+
+#ifdef QCOM_HARDWARE
+    static const char KEY_SUPPORTED_THUMBNAIL_SIZES[];
+#endif
     // Supported EXIF thumbnail sizes (width x height). 0x0 means not thumbnail
     // in EXIF.
     // Example value: "512x384,320x240,0x0". Read only.
@@ -595,10 +599,10 @@ public:
     static const char KEY_GPS_ALTITUDE_REF[];
     static const char KEY_GPS_STATUS[];
     static const char KEY_EXIF_DATETIME[];
-#ifndef SAMSUNG_CAMERA_HARDWARE
+//#ifndef SAMSUNG_CAMERA_HARDWARE
     static const char KEY_ISO_MODE[];
     static const char KEY_SUPPORTED_ISO_MODES[];
-#endif
+//#endif
 #endif
 
     // The state of the video stabilization. If set to true, both the
@@ -652,9 +656,14 @@ public:
     static const char KEY_SELECTABLE_ZONE_AF[];
     static const char KEY_SUPPORTED_SELECTABLE_ZONE_AF[];
 
+    static const char KEY_SUPPORTED_CAF[];
+
     //Face Detection
     static const char KEY_FACE_DETECTION[];
     static const char KEY_SUPPORTED_FACE_DETECTION[];
+
+    static const char KEY_SHUTTER_SOUND[];
+    static const char KEY_BRIGHTNESS_MODE[];
 
     //Redeye Reduction
     static const char KEY_REDEYE_REDUCTION[];
@@ -693,6 +702,9 @@ public:
     static const char EFFECT_EMBOSS[];
     static const char EFFECT_SKETCH[];
     static const char EFFECT_NEON[];
+    static const char EFFECT_NEGATIVE_SEPIA[];
+    static const char EFFECT_PASTEL[];
+    static const char EFFECT_BLUE[];
 
     // Values for Touch AF/AEC
     static const char TOUCH_AF_AEC_OFF[] ;
@@ -792,18 +804,12 @@ public:
     // CameraHardwareInterface.autoFocus in this mode.
     static const char FOCUS_MODE_EDOF[];
     // Continuous auto focus mode intended for video recording. The camera
-    // continuously tries to focus. This is the best choice for video
-    // recording because the focus changes smoothly . Applications still can
-    // call CameraHardwareInterface.takePicture in this mode but the subject may
-    // not be in focus. Auto focus starts when the parameter is set.
-    //
-    // Applications can call CameraHardwareInterface.autoFocus in this mode. The
-    // focus callback will immediately return with a boolean that indicates
-    // whether the focus is sharp or not. The focus position is locked after
-    // autoFocus call. If applications want to resume the continuous focus,
-    // cancelAutoFocus must be called. Restarting the preview will not resume
-    // the continuous autofocus. To stop continuous focus, applications should
-    // change the focus mode to other modes.
+    // continuously tries to focus. This is ideal for shooting video.
+    // Applications still can call CameraHardwareInterface.takePicture in this
+    // mode but the subject may not be in focus. Auto focus starts when the
+    // parameter is set. Applications should not call
+    // CameraHardwareInterface.autoFocus in this mode. To stop continuous focus,
+    // applications should change the focus mode to other modes.
     static const char FOCUS_MODE_CONTINUOUS_VIDEO[];
     // Continuous auto focus mode intended for taking pictures. The camera
     // continuously tries to focus. The speed of focus change is more aggressive
@@ -832,6 +838,7 @@ public:
     // Proprietaries from CodeAurora use these...
     static const char CONTINUOUS_AF_OFF[] ;
     static const char CONTINUOUS_AF_ON[] ;
+    static const char KEY_CAF[];
     static const char KEY_CONTINUOUS_AF[] ;
 
     // Normal focus mode. Applications should call
@@ -867,6 +874,23 @@ public:
     static const char KEY_MAX_SATURATION[];
 #ifdef QCOM_HARDWARE
     static const char KEY_MIN_SATURATION[];
+
+//
+// KD 9/28 - Add reuqired parameters for Froyo on the Triumph - should not
+// break other cameras.
+//
+    static const char WIDESCREEN_4_3[];
+    static const char WIDESCREEN_5_3[];
+    static const char KEY_MAX_BRIGHTNESS[];
+    static const char KEY_SUPPORTED_WIDESCREEN[];
+    static const char KEY_BRIGHTNESS[];
+    static const char KEY_WIDESCREEN[];
+    static const char KEY_DEF_SHARPNESS[];
+    static const char KEY_DEF_CONTRAST[];
+    static const char KEY_DEF_BRIGHTNESS[];
+    static const char KEY_MIN_BRIGHTNESS[];
+    static const char KEY_DEF_SATURATION[];
+// end
 #endif
 
     static const char KEY_HISTOGRAM[] ;

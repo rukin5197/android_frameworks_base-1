@@ -26,6 +26,11 @@
 
 namespace android {
 
+enum {
+    CAMERA_FACING_BACK = 0, /* The facing of the camera is opposite to that of the screen. */
+    CAMERA_FACING_FRONT = 1 /* The facing of the camera is the same as that of the screen. */
+};
+
 struct CameraInfo {
     /**
      * The direction that the camera faces to. It should be CAMERA_FACING_BACK
@@ -91,6 +96,15 @@ public:
 
             // pass the buffered ISurfaceTexture to the camera service
             status_t    setPreviewTexture(const sp<ISurfaceTexture>& surfaceTexture);
+
+#ifdef USE_GETBUFFERINFO
+            // query the recording buffer information from HAL layer.
+            status_t    getBufferInfo(sp<IMemory>& Frame, size_t *alignedSize);
+#endif
+#ifdef CAF_CAMERA_GB_REL
+            //encode the YUV data
+            void        encodeData();
+#endif
 
             // start preview mode, must call setPreviewDisplay first
             status_t    startPreview();

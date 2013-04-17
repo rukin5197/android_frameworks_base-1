@@ -47,6 +47,12 @@ enum {
     RECORDING_ENABLED,
     RELEASE_RECORDING_FRAME,
     STORE_META_DATA_IN_BUFFERS,
+#ifdef USE_GETBUFFERINFO
+    GET_BUFFER_INFO,
+#endif
+#ifdef CAF_CAMERA_GB_REL
+    ENCODE_YUV_DATA,
+#endif
 };
 
 class BpCamera: public BpInterface<ICamera>
@@ -99,6 +105,33 @@ public:
         data.writeInt32(flag);
         remote()->transact(SET_PREVIEW_CALLBACK_FLAG, data, &reply);
     }
+
+#ifdef USE_GETBUFFERINFO
+    // get the recording buffer information.
+    status_t getBufferInfo(sp<IMemory>& Frame, size_t *alignedSize)
+    {
+        status_t ret;
+        LOGV("getBufferInfo");
+        Parcel data, reply;
+        data.writeInterfaceToken(ICamera::getInterfaceDescriptor());
+        data.writeStrongBinder(Frame->asBinder());
+        remote()->transact(GET_BUFFER_INFO, data, &reply);
+        ret = reply.readInt32();
+        *alignedSize = reply.readInt32();
+        return ret;
+    }
+
+#endif
+#ifdef CAF_CAMERA_GB_REL
+    // encode the YUV data.
+    void encodeData()
+    {
+        LOGV("encodeData");
+        Parcel data, reply;
+        data.writeInterfaceToken(ICamera::getInterfaceDescriptor());
+        remote()->transact(ENCODE_YUV_DATA, data, &reply);
+    }
+#endif
 
     // start preview mode, must call setPreviewDisplay first
     status_t startPreview()
@@ -301,6 +334,25 @@ status_t BnCamera::onTransact(
             setPreviewCallbackFlag(callback_flag);
             return NO_ERROR;
         } break;
+#ifdef USE_GETBUFFERINFO
+        case GET_BUFFER_INFO:{
+            LOGV("GET_BUFFER_INFO");
+            CHECK_INTERFACE(ICamera, data, reply);
+            sp<IMemory> Frame = interface_cast<IMemory>(data.readStrongBinder());
+            size_t alignedSize;
+            reply->writeInt32(getBufferInfo(Frame, &alignedSize));
+            reply->writeInt32(alignedSize);
+            return NO_ERROR;
+        } break;
+#endif
+#ifdef CAF_CAMERA_GB_REL
+        case ENCODE_YUV_DATA:{
+            LOGV("ENCODE_YUV_DATA");
+            CHECK_INTERFACE(ICamera, data, reply);
+            encodeData();
+            return NO_ERROR;
+        } break;
+#endif
         case START_PREVIEW: {
             ALOGV("START_PREVIEW");
             CHECK_INTERFACE(ICamera, data, reply);
