@@ -42,7 +42,6 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES:= \
 	$(commonSources) \
-	Overlay.cpp \
 	EGLUtils.cpp \
 	FramebufferNativeWindow.cpp \
 	GraphicBuffer.cpp \
@@ -53,6 +52,11 @@ LOCAL_SRC_FILES:= \
 	PixelFormat.cpp \
 	Rect.cpp \
 	Region.cpp
+	
+ifeq ($(BOARD_USES_TRIUMPH_OVERLAY),true)
+    LOCAL_SRC_FILES+= Overlay.cpp
+endif
+	
 
 LOCAL_SHARED_LIBRARIES := \
 	libcutils \

@@ -187,15 +187,7 @@ public class PasswordUnlockScreen extends LinearLayout implements KeyguardScreen
                         if (mLockPatternUtils.checkPassword(entry)) {
                             mCallback.keyguardDone(true);
                             mCallback.reportSuccessfulUnlockAttempt();
-                        } else {
-                            if (mLastPasswordLength > entry.length()) { // user deleted last char
-                                mCallback.reportFailedUnlockAttempt();
-                                if (0 == (mUpdateMonitor.getFailedAttempts() % LockPatternUtils.FAILED_ATTEMPTS_BEFORE_TIMEOUT)) {
-                                    long deadline = mLockPatternUtils.setLockoutAttemptDeadline();
-                                    handleAttemptLockout(deadline);
-                                }
-                            }
-                        }
+                            KeyStore.getInstance().password(entry);
                     }
                     mLastPasswordLength = entry.length();
                 }
