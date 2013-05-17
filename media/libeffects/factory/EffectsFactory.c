@@ -188,7 +188,7 @@ int EffectQueryNumberEffects(uint32_t *pNumEffects)
     *pNumEffects = gNumEffects;
     gCanQueryEffect = 1;
     pthread_mutex_unlock(&gLibLock);
-    ALOGV("EffectQueryNumberEffects(): %d", *pNumEffects);
+    LOGV("EffectQueryNumberEffects(): %d", *pNumEffects);
     return ret;
 }
 
@@ -230,7 +230,7 @@ int EffectQueryEffect(uint32_t index, effect_descriptor_t *pDescriptor)
 #if (LOG_NDEBUG == 0)
     char str[256];
     dumpEffectDescriptor(pDescriptor, str, 256);
-    ALOGV("EffectQueryEffect() desc:%s", str);
+    LOGV("EffectQueryEffect() desc:%s", str);
 #endif
     pthread_mutex_unlock(&gLibLock);
     return ret;
@@ -271,7 +271,7 @@ int EffectCreate(effect_uuid_t *uuid, int32_t sessionId, int32_t ioId, effect_ha
         return -EINVAL;
     }
 
-    ALOGV("EffectCreate() UUID: %08X-%04X-%04X-%04X-%02X%02X%02X%02X%02X%02X\n",
+    LOGV("EffectCreate() UUID: %08X-%04X-%04X-%04X-%02X%02X%02X%02X%02X%02X\n",
             uuid->timeLow, uuid->timeMid, uuid->timeHiAndVersion,
             uuid->clockSeq, uuid->node[0], uuid->node[1],uuid->node[2],
             uuid->node[3],uuid->node[4],uuid->node[5]);
@@ -302,10 +302,10 @@ int EffectCreate(effect_uuid_t *uuid, int32_t sessionId, int32_t ioId, effect_ha
     fx->subItfe = itfe;
     if ((*itfe)->process_reverse != NULL) {
         fx->itfe = (struct effect_interface_s *)&gInterfaceWithReverse;
-        ALOGV("EffectCreate() gInterfaceWithReverse");
+        LOGV("EffectCreate() gInterfaceWithReverse");
     }   else {
         fx->itfe = (struct effect_interface_s *)&gInterface;
-        ALOGV("EffectCreate() gInterface");
+        LOGV("EffectCreate() gInterface");
     }
     fx->lib = l;
 
@@ -316,7 +316,7 @@ int EffectCreate(effect_uuid_t *uuid, int32_t sessionId, int32_t ioId, effect_ha
 
     *pHandle = (effect_handle_t)fx;
 
-    ALOGV("EffectCreate() created entry %p with sub itfe %p in library %s", *pHandle, itfe, l->name);
+    LOGV("EffectCreate() created entry %p with sub itfe %p in library %s", *pHandle, itfe, l->name);
 
 exit:
     pthread_mutex_unlock(&gLibLock);
@@ -401,7 +401,7 @@ int init() {
 
     updateNumEffects();
     gInitDone = 1;
-    ALOGV("init() done");
+    LOGV("init() done");
     return 0;
 }
 
@@ -492,7 +492,7 @@ int loadLibrary(cnode *root, const char *name)
     e->next = gLibraryList;
     gLibraryList = e;
     pthread_mutex_unlock(&gLibLock);
-    ALOGV("getLibrary() linked library %p for path %s", l, node->value);
+    LOGV("getLibrary() linked library %p for path %s", l, node->value);
 
     return 0;
 
@@ -558,7 +558,7 @@ int loadEffect(cnode *root)
 #if (LOG_NDEBUG==0)
     char s[256];
     dumpEffectDescriptor(d, s, 256);
-    ALOGV("loadEffect() read descriptor %p:%s",d, s);
+    LOGV("loadEffect() read descriptor %p:%s",d, s);
 #endif
     if (EFFECT_API_VERSION_MAJOR(d->apiVersion) !=
             EFFECT_API_VERSION_MAJOR(EFFECT_CONTROL_API_VERSION)) {
@@ -657,10 +657,10 @@ int findEffect(effect_uuid_t *type,
         e = e->next;
     }
     if (!found) {
-        ALOGV("findEffect() effect not found");
+        LOGV("findEffect() effect not found");
         ret = -ENOENT;
     } else {
-        ALOGV("findEffect() found effect: %s in lib %s", d->name, l->name);
+        LOGV("findEffect() found effect: %s in lib %s", d->name, l->name);
         *lib = l;
         if (desc) {
             *desc = d;

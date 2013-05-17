@@ -169,7 +169,7 @@ bool AssetManager::addAssetPath(const String8& path, void** cookie, bool asSkin)
         }
     }
 
-    ALOGV("In %p Asset %s path: %s", this,
+    LOGV("In %p Asset %s path: %s", this,
          ap.type == kFileTypeDirectory ? "dir" : "zip", ap.path.string());
 
     mAssetPaths.add(ap);
@@ -566,7 +566,7 @@ Asset* AssetManager::openNonAsset(void* cookie, const char* fileName, AccessMode
         loadFileNameCacheLocked();
 
     if (which < mAssetPaths.size()) {
-        ALOGV("Looking for non-asset '%s' in '%s'\n", fileName,
+        LOGV("Looking for non-asset '%s' in '%s'\n", fileName,
                 mAssetPaths.itemAt(which).path.string());
         Asset* pAsset = openNonAssetInPathLocked(
             fileName, mode, mAssetPaths.itemAt(which));
@@ -739,7 +739,7 @@ Asset* AssetManager::openIdmapLocked(const struct asset_path& ap) const
         ass = const_cast<AssetManager*>(this)->
             openAssetFromFileLocked(ap.idmap, Asset::ACCESS_BUFFER);
         if (ass) {
-            ALOGV("loading idmap %s\n", ap.idmap.string());
+            LOGV("loading idmap %s\n", ap.idmap.string());
         } else {
             ALOGW("failed to load idmap %s\n", ap.idmap.string());
         }
@@ -1033,7 +1033,7 @@ String8 AssetManager::createPathNameLocked(const asset_path& ap, const char* roo
  */
 ZipFileRO* AssetManager::getZipFileLocked(const asset_path& ap)
 {
-    ALOGV("getZipFileLocked() in %p\n", this);
+    LOGV("getZipFileLocked() in %p\n", this);
 
     return mZipSet.getZip(ap.path);
 }
@@ -1100,12 +1100,12 @@ Asset* AssetManager::openAssetFromZipLocked(const ZipFileRO* pZipFile,
 
     if (method == ZipFileRO::kCompressStored) {
         pAsset = Asset::createFromUncompressedMap(dataMap, mode);
-        ALOGV("Opened uncompressed entry %s in zip %s mode %d: %p", entryName.string(),
+        LOGV("Opened uncompressed entry %s in zip %s mode %d: %p", entryName.string(),
                 dataMap->getFileName(), mode, pAsset);
     } else {
         pAsset = Asset::createFromCompressedMap(dataMap, method,
             uncompressedLen, mode);
-        ALOGV("Opened compressed entry %s in zip %s mode %d: %p", entryName.string(),
+        LOGV("Opened compressed entry %s in zip %s mode %d: %p", entryName.string(),
                 dataMap->getFileName(), mode, pAsset);
     }
     if (pAsset == NULL) {
@@ -1163,10 +1163,10 @@ AssetDir* AssetManager::openDir(const char* dirName)
             continue;
         }
         if (ap.type == kFileTypeRegular) {
-            ALOGV("Adding directory %s from zip %s", dirName, ap.path.string());
+            LOGV("Adding directory %s from zip %s", dirName, ap.path.string());
             scanAndMergeZipLocked(pMergedInfo, ap, kAssetsRoot, dirName);
         } else {
-            ALOGV("Adding directory %s from dir %s", dirName, ap.path.string());
+            LOGV("Adding directory %s from dir %s", dirName, ap.path.string());
             scanAndMergeDirLocked(pMergedInfo, ap, kAssetsRoot, dirName);
         }
     }
@@ -1217,10 +1217,10 @@ AssetDir* AssetManager::openNonAssetDir(void* cookie, const char* dirName)
     if (which < mAssetPaths.size()) {
         const asset_path& ap = mAssetPaths.itemAt(which);
         if (ap.type == kFileTypeRegular) {
-            ALOGV("Adding directory %s from zip %s", dirName, ap.path.string());
+            LOGV("Adding directory %s from zip %s", dirName, ap.path.string());
             scanAndMergeZipLocked(pMergedInfo, ap, NULL, dirName);
         } else {
-            ALOGV("Adding directory %s from dir %s", dirName, ap.path.string());
+            LOGV("Adding directory %s from dir %s", dirName, ap.path.string());
             scanAndMergeDirLocked(pMergedInfo, ap, NULL, dirName);
         }
     }
@@ -1342,7 +1342,7 @@ bool AssetManager::scanAndMergeDirLocked(SortedVector<AssetDir::FileInfo>* pMerg
 
             matchIdx = AssetDir::FileInfo::findEntry(pMergedInfo, match);
             if (matchIdx > 0) {
-                ALOGV("Excluding '%s' [%s]\n",
+                LOGV("Excluding '%s' [%s]\n",
                     pMergedInfo->itemAt(matchIdx).getFileName().string(),
                     pMergedInfo->itemAt(matchIdx).getSourceName().string());
                 pMergedInfo->removeAt(matchIdx);
@@ -1382,7 +1382,7 @@ SortedVector<AssetDir::FileInfo>* AssetManager::scanDirLocked(const String8& pat
     struct dirent* entry;
     FileType fileType;
 
-    ALOGV("Scanning dir '%s'\n", path.string());
+    LOGV("Scanning dir '%s'\n", path.string());
 
     dir = opendir(path.string());
     if (dir == NULL)
@@ -1799,7 +1799,7 @@ AssetManager::SharedZip::SharedZip(const String8& path, time_t modWhen)
 {
     //ALOGI("Creating SharedZip %p %s\n", this, (const char*)mPath);
     mZipFile = new ZipFileRO;
-    ALOGV("+++ opening zip '%s'\n", mPath.string());
+    LOGV("+++ opening zip '%s'\n", mPath.string());
     if (mZipFile->open(mPath.string()) != NO_ERROR) {
         ALOGD("failed to open Zip archive '%s'\n", mPath.string());
         delete mZipFile;
@@ -1828,7 +1828,7 @@ ZipFileRO* AssetManager::SharedZip::getZip()
 
 Asset* AssetManager::SharedZip::getResourceTableAsset()
 {
-    ALOGV("Getting from SharedZip %p resource asset %p\n", this, mResourceTableAsset);
+    LOGV("Getting from SharedZip %p resource asset %p\n", this, mResourceTableAsset);
     return mResourceTableAsset;
 }
 
@@ -1850,7 +1850,7 @@ Asset* AssetManager::SharedZip::setResourceTableAsset(Asset* asset)
 
 ResTable* AssetManager::SharedZip::getResourceTable()
 {
-    ALOGV("Getting from SharedZip %p resource table %p\n", this, mResourceTable);
+    LOGV("Getting from SharedZip %p resource table %p\n", this, mResourceTable);
     return mResourceTable;
 }
 
@@ -1884,7 +1884,7 @@ AssetManager::SharedZip::~SharedZip()
     }
     if (mZipFile != NULL) {
         delete mZipFile;
-        ALOGV("Closed '%s'\n", mPath.string());
+        LOGV("Closed '%s'\n", mPath.string());
     }
 }
 

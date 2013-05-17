@@ -222,7 +222,7 @@ bool ZipFileRO::mapCentralDirectory(void)
             free(scanBuf);
             return false;
         } else if (header != kLFHSignature) {
-            ALOGV("Not a Zip archive (found 0x%08x)\n", header);
+            LOGV("Not a Zip archive (found 0x%08x)\n", header);
             free(scanBuf);
             return false;
         }
@@ -264,7 +264,7 @@ bool ZipFileRO::mapCentralDirectory(void)
     int i;
     for (i = readAmount - kEOCDLen; i >= 0; i--) {
         if (scanBuf[i] == 0x50 && get4LE(&scanBuf[i]) == kEOCDSignature) {
-            ALOGV("+++ Found EOCD at buf+%d\n", i);
+            LOGV("+++ Found EOCD at buf+%d\n", i);
             break;
         }
     }
@@ -299,7 +299,7 @@ bool ZipFileRO::mapCentralDirectory(void)
         return false;
     }
 
-    ALOGV("+++ numEntries=%d dirSize=%d dirOffset=%d\n",
+    LOGV("+++ numEntries=%d dirSize=%d dirOffset=%d\n",
         numEntries, dirSize, dirOffset);
 
     mDirectoryMap = new FileMap();
@@ -372,7 +372,7 @@ bool ZipFileRO::parseZipArchive(void)
             goto bail;
         }
     }
-    ALOGV("+++ zip good scan %d entries\n", numEntries);
+    LOGV("+++ zip good scan %d entries\n", numEntries);
     result = true;
 
 bail:

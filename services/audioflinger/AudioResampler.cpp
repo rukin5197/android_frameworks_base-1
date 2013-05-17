@@ -96,15 +96,15 @@ AudioResampler* AudioResampler::create(int bitDepth, int inChannelCount,
     switch (quality) {
     default:
     case LOW_QUALITY:
-        ALOGV("Create linear Resampler");
+        LOGV("Create linear Resampler");
         resampler = new AudioResamplerOrder1(bitDepth, inChannelCount, sampleRate);
         break;
     case MED_QUALITY:
-        ALOGV("Create cubic Resampler");
+        LOGV("Create cubic Resampler");
         resampler = new AudioResamplerCubic(bitDepth, inChannelCount, sampleRate);
         break;
     case HIGH_QUALITY:
-        ALOGV("Create sinc Resampler");
+        LOGV("Create sinc Resampler");
         resampler = new AudioResamplerSinc(bitDepth, inChannelCount, sampleRate);
         break;
     }

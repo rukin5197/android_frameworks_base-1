@@ -34,7 +34,7 @@ SortedVector< wp<IMediaDeathNotifier> > IMediaDeathNotifier::sObitRecipients;
 /*static*/const sp<IMediaPlayerService>&
 IMediaDeathNotifier::getMediaPlayerService()
 {
-    ALOGV("getMediaPlayerService");
+    LOGV("getMediaPlayerService");
     Mutex::Autolock _l(sServiceLock);
     if (sMediaPlayerService.get() == 0) {
         sp<IServiceManager> sm = defaultServiceManager();
@@ -61,7 +61,7 @@ IMediaDeathNotifier::getMediaPlayerService()
 /*static*/ void
 IMediaDeathNotifier::addObitRecipient(const wp<IMediaDeathNotifier>& recipient)
 {
-    ALOGV("addObitRecipient");
+    LOGV("addObitRecipient");
     Mutex::Autolock _l(sServiceLock);
     sObitRecipients.add(recipient);
 }
@@ -69,7 +69,7 @@ IMediaDeathNotifier::addObitRecipient(const wp<IMediaDeathNotifier>& recipient)
 /*static*/ void
 IMediaDeathNotifier::removeObitRecipient(const wp<IMediaDeathNotifier>& recipient)
 {
-    ALOGV("removeObitRecipient");
+    LOGV("removeObitRecipient");
     Mutex::Autolock _l(sServiceLock);
     sObitRecipients.remove(recipient);
 }
@@ -100,7 +100,7 @@ IMediaDeathNotifier::DeathNotifier::binderDied(const wp<IBinder>& who) {
 
 IMediaDeathNotifier::DeathNotifier::~DeathNotifier()
 {
-    ALOGV("DeathNotifier::~DeathNotifier");
+    LOGV("DeathNotifier::~DeathNotifier");
     Mutex::Autolock _l(sServiceLock);
     sObitRecipients.clear();
     if (sMediaPlayerService != 0) {

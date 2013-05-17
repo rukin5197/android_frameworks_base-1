@@ -248,7 +248,7 @@ int move_dex(const char *src, const char *dst)
     if (create_cache_path(src_dex, src)) return -1;
     if (create_cache_path(dst_dex, dst)) return -1;
 
-    ALOGV("move %s -> %s\n", src_dex, dst_dex);
+    LOGV("move %s -> %s\n", src_dex, dst_dex);
     if (rename(src_dex, dst_dex) < 0) {
         ALOGE("Couldn't move %s: %s\n", src_dex, strerror(errno));
         return -1;
@@ -264,7 +264,7 @@ int rm_dex(const char *path)
     if (validate_apk_path(path)) return -1;
     if (create_cache_path(dex_path, path)) return -1;
 
-    ALOGV("unlink %s\n", dex_path);
+    LOGV("unlink %s\n", dex_path);
     if (unlink(dex_path) < 0) {
         ALOGE("Couldn't unlink %s: %s\n", dex_path, strerror(errno));
         return -1;
@@ -483,7 +483,7 @@ static int wait_dexopt(pid_t pid, const char* apk_path)
     }
 
     if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
-        ALOGV("DexInv: --- END '%s' (success) ---\n", apk_path);
+        LOGV("DexInv: --- END '%s' (success) ---\n", apk_path);
         return 0;
     } else {
         ALOGW("DexInv: --- END '%s' --- status=0x%04x, process failed\n",
@@ -550,7 +550,7 @@ int dexopt(const char *apk_path, uid_t uid, int is_public)
         goto fail;
     }
 
-    ALOGV("DexInv: --- BEGIN '%s' ---\n", apk_path);
+    LOGV("DexInv: --- BEGIN '%s' ---\n", apk_path);
 
     pid_t pid;
     pid = fork();
@@ -605,7 +605,7 @@ void mkinnerdirs(char* path, int basepos, mode_t mode, int uid, int gid,
         if (path[basepos] == '/') {
             path[basepos] = 0;
             if (lstat(path, statbuf) < 0) {
-                ALOGV("Making directory: %s\n", path);
+                LOGV("Making directory: %s\n", path);
                 if (mkdir(path, mode) == 0) {
                     chown(path, uid, gid);
                 } else {
@@ -637,7 +637,7 @@ int movefileordir(char* srcpath, char* dstpath, int dstbasepos,
     if ((statbuf->st_mode&S_IFDIR) == 0) {
         mkinnerdirs(dstpath, dstbasepos, S_IRWXU|S_IRWXG|S_IXOTH,
                 dstuid, dstgid, statbuf);
-        ALOGV("Renaming %s to %s (uid %d)\n", srcpath, dstpath, dstuid);
+        LOGV("Renaming %s to %s (uid %d)\n", srcpath, dstpath, dstuid);
         if (rename(srcpath, dstpath) >= 0) {
             if (chown(dstpath, dstuid, dstgid) < 0) {
                 ALOGE("cannot chown %s: %s\n", dstpath, strerror(errno));
@@ -746,7 +746,7 @@ int movefiles()
                 }
                 if (bufi < bufe) {
                     buf[bufi] = 0;
-                    ALOGV("Processing line: %s\n", buf+bufp);
+                    LOGV("Processing line: %s\n", buf+bufp);
                     hasspace = 0;
                     while (bufp < bufi && isspace(buf[bufp])) {
                         hasspace = 1;
@@ -761,7 +761,7 @@ int movefiles()
                         } else if (srcpkg[0] == 0) {
                             // Skip -- source package no longer exists.
                         } else {
-                            ALOGV("Move file: %s (from %s to %s)\n", buf+bufp, srcpkg, dstpkg);
+                            LOGV("Move file: %s (from %s to %s)\n", buf+bufp, srcpkg, dstpkg);
                             if (!create_move_path(srcpath, srcpkg, buf+bufp, 0) &&
                                     !create_move_path(dstpath, dstpkg, buf+bufp, 0)) {
                                 movefileordir(srcpath, dstpath,
@@ -820,7 +820,7 @@ int movefiles()
                                                 div, UPDATE_COMMANDS_DIR_PREFIX, name);
                                     }
                                 }
-                                ALOGV("Transfering from %s to %s: uid=%d\n",
+                                LOGV("Transfering from %s to %s: uid=%d\n",
                                     srcpkg, dstpkg, dstuid);
                             }
                         }
@@ -847,7 +847,7 @@ int movefiles()
                     }
                     bufe += readlen;
                     buf[bufe] = 0;
-                    ALOGV("Read buf: %s\n", buf);
+                    LOGV("Read buf: %s\n", buf);
                 }
             }
             close(subfd);

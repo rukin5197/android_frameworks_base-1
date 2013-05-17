@@ -6778,9 +6778,12 @@ sp<AudioFlinger::EffectHandle> AudioFlinger::EffectModule::controlHandle()
 
 void AudioFlinger::EffectModule::disconnect(const wp<EffectHandle>& handle, bool unpiniflast)
 {
+<<<<<<< HEAD
 #ifdef WITH_QCOM_LPA
     setEnabled(false);
 #endif
+=======
+>>>>>>> parent of 06ade6a... Rename (IF_)LOGV(_IF) to (IF_)ALOGV(_IF)
     LOGV("disconnect() %p handle %p ", this, handle.unsafe_get());
     // keep a strong reference on this EffectModule to avoid calling the
     // destructor before we exit
@@ -7134,6 +7137,7 @@ status_t AudioFlinger::EffectModule::setEnabled(bool enabled)
         Mutex::Autolock _l(mLock);
         LOGV("setEnabled %p enabled %d", this, enabled);
 
+<<<<<<< HEAD
         if (enabled != isEnabled()) {
 #ifdef WITH_QCOM_LPA
             effectStateChanged = true;
@@ -7142,6 +7146,16 @@ status_t AudioFlinger::EffectModule::setEnabled(bool enabled)
             if (enabled && status != NO_ERROR) {
                 return status;
             }
+=======
+    Mutex::Autolock _l(mLock);
+    LOGV("setEnabled %p enabled %d", this, enabled);
+
+    if (enabled != isEnabled()) {
+        status_t status = AudioSystem::setEffectEnabled(mId, enabled);
+        if (enabled && status != NO_ERROR) {
+            return status;
+        }
+>>>>>>> parent of 06ade6a... Rename (IF_)LOGV(_IF) to (IF_)ALOGV(_IF)
 
             switch (mState) {
             // going from disabled to enabled

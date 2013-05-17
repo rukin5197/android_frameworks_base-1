@@ -561,7 +561,7 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
         // Report any devices that had last been added/removed.
         while (mClosingDevices) {
             Device* device = mClosingDevices;
-            ALOGV("Reporting device closed: id=%d, name=%s\n",
+            LOGV("Reporting device closed: id=%d, name=%s\n",
                  device->id, device->path.string());
             mClosingDevices = device->next;
             event->when = now;
@@ -583,7 +583,7 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
 
         while (mOpeningDevices != NULL) {
             Device* device = mOpeningDevices;
-            ALOGV("Reporting device opened: id=%d, name=%s\n",
+            LOGV("Reporting device opened: id=%d, name=%s\n",
                  device->id, device->path.string());
             mOpeningDevices = device->next;
             event->when = now;
@@ -621,7 +621,7 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
 
             if (eventItem.data.u32 == EPOLL_ID_WAKE) {
                 if (eventItem.events & EPOLLIN) {
-                    ALOGV("awoken after wake()");
+                    LOGV("awoken after wake()");
                     awoken = true;
                     char buffer[16];
                     ssize_t nRead;
@@ -664,7 +664,7 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
                     size_t count = size_t(readSize) / sizeof(struct input_event);
                     for (size_t i = 0; i < count; i++) {
                         const struct input_event& iev = readBuffer[i];
-                        ALOGV("%s got: t0=%d, t1=%d, type=%d, code=%d, value=%d",
+                        LOGV("%s got: t0=%d, t1=%d, type=%d, code=%d, value=%d",
                                 device->path.string(),
                                 (int) iev.time.tv_sec, (int) iev.time.tv_usec,
                                 iev.type, iev.code, iev.value);
@@ -683,7 +683,7 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
                         // system call that also queries ktime_get_ts().
                         event->when = nsecs_t(iev.time.tv_sec) * 1000000000LL
                                 + nsecs_t(iev.time.tv_usec) * 1000LL;
-                        ALOGV("event time %lld, now %lld", event->when, now);
+                        LOGV("event time %lld, now %lld", event->when, now);
 #else
                         event->when = now;
 #endif
@@ -696,7 +696,7 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
                         if (iev.type == EV_KEY && device->keyMap.haveKeyLayout()) {
                             status_t err = device->keyMap.keyLayoutMap->mapKey(iev.code,
                                         &event->keyCode, &event->flags);
-                            ALOGV("iev.code=%d keyCode=%d flags=0x%08x err=%d\n",
+                            LOGV("iev.code=%d keyCode=%d flags=0x%08x err=%d\n",
                                     iev.code, event->keyCode, event->flags, err);
                         }
                         event += 1;
@@ -795,7 +795,7 @@ size_t EventHub::getEvents(int timeoutMillis, RawEvent* buffer, size_t bufferSiz
 }
 
 void EventHub::wake() {
-    ALOGV("wake() called");
+    LOGV("wake() called");
 
     ssize_t nWrite;
     do {
@@ -843,7 +843,7 @@ static const int32_t GAMEPAD_KEYCODES[] = {
 status_t EventHub::openDeviceLocked(const char *devicePath) {
     char buffer[80];
 
-    ALOGV("Opening device: %s", devicePath);
+    LOGV("Opening device: %s", devicePath);
 
     int fd = open(devicePath, O_RDWR);
     if(fd < 0) {
@@ -1055,7 +1055,7 @@ status_t EventHub::openDeviceLocked(const char *devicePath) {
 
     // If the device isn't recognized as something we handle, don't monitor it.
     if (device->classes == 0) {
-        ALOGV("Dropping device: id=%d, path='%s', name='%s'",
+        LOGV("Dropping device: id=%d, path='%s', name='%s'",
                 deviceId, devicePath, device->identifier.name.string());
         delete device;
         return -1;
@@ -1159,7 +1159,7 @@ status_t EventHub::closeDeviceByPathLocked(const char *devicePath) {
         closeDeviceLocked(device);
         return 0;
     }
-    ALOGV("Remove device: %s not found, device may already have been removed.", devicePath);
+    LOGV("Remove device: %s not found, device may already have been removed.", devicePath);
     return -1;
 }
 
@@ -1226,7 +1226,7 @@ status_t EventHub::readNotifyLocked() {
     int event_pos = 0;
     struct inotify_event *event;
 
-    ALOGV("EventHub::readNotify nfd: %d\n", mINotifyFd);
+    LOGV("EventHub::readNotify nfd: %d\n", mINotifyFd);
     res = read(mINotifyFd, event_buf, sizeof(event_buf));
     if(res < (int)sizeof(*event)) {
         if(errno == EINTR)
@@ -1284,7 +1284,7 @@ status_t EventHub::scanDirLocked(const char *dirname)
 }
 
 void EventHub::requestReopenDevices() {
-    ALOGV("requestReopenDevices() called");
+    LOGV("requestReopenDevices() called");
 
     AutoMutex _l(mLock);
     mNeedToReopenDevices = true;

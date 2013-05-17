@@ -50,14 +50,14 @@ android_media_MediaProfiles_native_init(JNIEnv *env)
 static jint
 android_media_MediaProfiles_native_get_num_file_formats(JNIEnv *env, jobject thiz)
 {
-    ALOGV("native_get_num_file_formats");
+    LOGV("native_get_num_file_formats");
     return sProfiles->getOutputFileFormats().size();
 }
 
 static jint
 android_media_MediaProfiles_native_get_file_format(JNIEnv *env, jobject thiz, jint index)
 {
-    ALOGV("native_get_file_format: %d", index);
+    LOGV("native_get_file_format: %d", index);
     Vector<output_format> formats = sProfiles->getOutputFileFormats();
     int nSize = formats.size();
     if (index < 0 || index >= nSize) {
@@ -70,14 +70,14 @@ android_media_MediaProfiles_native_get_file_format(JNIEnv *env, jobject thiz, ji
 static jint
 android_media_MediaProfiles_native_get_num_video_encoders(JNIEnv *env, jobject thiz)
 {
-    ALOGV("native_get_num_video_encoders");
+    LOGV("native_get_num_video_encoders");
     return sProfiles->getVideoEncoders().size();
 }
 
 static jobject
 android_media_MediaProfiles_native_get_video_encoder_cap(JNIEnv *env, jobject thiz, jint index)
 {
-    ALOGV("native_get_video_encoder_cap: %d", index);
+    LOGV("native_get_video_encoder_cap: %d", index);
     Vector<video_encoder> encoders = sProfiles->getVideoEncoders();
     int nSize = encoders.size();
     if (index < 0 || index >= nSize) {
@@ -121,14 +121,14 @@ android_media_MediaProfiles_native_get_video_encoder_cap(JNIEnv *env, jobject th
 static jint
 android_media_MediaProfiles_native_get_num_audio_encoders(JNIEnv *env, jobject thiz)
 {
-    ALOGV("native_get_num_audio_encoders");
+    LOGV("native_get_num_audio_encoders");
     return sProfiles->getAudioEncoders().size();
 }
 
 static jobject
 android_media_MediaProfiles_native_get_audio_encoder_cap(JNIEnv *env, jobject thiz, jint index)
 {
-    ALOGV("native_get_audio_encoder_cap: %d", index);
+    LOGV("native_get_audio_encoder_cap: %d", index);
     Vector<audio_encoder> encoders = sProfiles->getAudioEncoders();
     int nSize = encoders.size();
     if (index < 0 || index >= nSize) {
@@ -236,14 +236,14 @@ android_media_MediaProfiles_native_has_camcorder_profile(JNIEnv *env, jobject th
 static jint
 android_media_MediaProfiles_native_get_num_video_decoders(JNIEnv *env, jobject thiz)
 {
-    ALOGV("native_get_num_video_decoders");
+    LOGV("native_get_num_video_decoders");
     return sProfiles->getVideoDecoders().size();
 }
 
 static jint
 android_media_MediaProfiles_native_get_video_decoder_type(JNIEnv *env, jobject thiz, jint index)
 {
-    ALOGV("native_get_video_decoder_type: %d", index);
+    LOGV("native_get_video_decoder_type: %d", index);
     Vector<video_decoder> decoders = sProfiles->getVideoDecoders();
     int nSize = decoders.size();
     if (index < 0 || index >= nSize) {
@@ -257,14 +257,14 @@ android_media_MediaProfiles_native_get_video_decoder_type(JNIEnv *env, jobject t
 static jint
 android_media_MediaProfiles_native_get_num_audio_decoders(JNIEnv *env, jobject thiz)
 {
-    ALOGV("native_get_num_audio_decoders");
+    LOGV("native_get_num_audio_decoders");
     return sProfiles->getAudioDecoders().size();
 }
 
 static jint
 android_media_MediaProfiles_native_get_audio_decoder_type(JNIEnv *env, jobject thiz, jint index)
 {
-    ALOGV("native_get_audio_decoder_type: %d", index);
+    LOGV("native_get_audio_decoder_type: %d", index);
     Vector<audio_decoder> decoders = sProfiles->getAudioDecoders();
     int nSize = decoders.size();
     if (index < 0 || index >= nSize) {
@@ -278,14 +278,14 @@ android_media_MediaProfiles_native_get_audio_decoder_type(JNIEnv *env, jobject t
 static jint
 android_media_MediaProfiles_native_get_num_image_encoding_quality_levels(JNIEnv *env, jobject thiz, jint cameraId)
 {
-    ALOGV("native_get_num_image_encoding_quality_levels");
+    LOGV("native_get_num_image_encoding_quality_levels");
     return sProfiles->getImageEncodingQualityLevels(cameraId).size();
 }
 
 static jint
 android_media_MediaProfiles_native_get_image_encoding_quality_level(JNIEnv *env, jobject thiz, jint cameraId, jint index)
 {
-    ALOGV("native_get_image_encoding_quality_level");
+    LOGV("native_get_image_encoding_quality_level");
     Vector<int> levels = sProfiles->getImageEncodingQualityLevels(cameraId);
     if (index < 0 || index >= levels.size()) {
         jniThrowException(env, "java/lang/IllegalArgumentException", "out of array boundary");
@@ -296,7 +296,7 @@ android_media_MediaProfiles_native_get_image_encoding_quality_level(JNIEnv *env,
 static jobject
 android_media_MediaProfiles_native_get_videoeditor_profile(JNIEnv *env, jobject thiz)
 {
-    ALOGV("native_get_videoeditor_profile");
+    LOGV("native_get_videoeditor_profile");
 
     int maxInputFrameWidth =
             sProfiles->getVideoEditorCapParamByName("videoeditor.input.width.max");
@@ -315,7 +315,7 @@ android_media_MediaProfiles_native_get_videoeditor_profile(JNIEnv *env, jobject 
             "Error retrieving videoeditor profile params");
         return NULL;
     }
-    ALOGV("native_get_videoeditor_profile \
+    LOGV("native_get_videoeditor_profile \
         inWidth:%d inHeight:%d,outWidth:%d, outHeight:%d",\
         maxInputFrameWidth,maxInputFrameHeight,\
         maxOutputFrameWidth,maxOutputFrameHeight);
@@ -335,7 +335,7 @@ static jint
 android_media_MediaProfiles_native_get_videoeditor_export_profile(
     JNIEnv *env, jobject thiz, jint codec)
 {
-    ALOGV("android_media_MediaProfiles_native_get_export_profile index ");
+    LOGV("android_media_MediaProfiles_native_get_export_profile index ");
     int profile =0;
     profile = sProfiles->getVideoEditorExportParamByName("videoeditor.export.profile", codec);
     // Check the values retrieved
@@ -351,7 +351,7 @@ static jint
 android_media_MediaProfiles_native_get_videoeditor_export_level(
     JNIEnv *env, jobject thiz, jint codec)
 {
-    ALOGV("android_media_MediaProfiles_native_get_export_level");
+    LOGV("android_media_MediaProfiles_native_get_export_level");
     int level =0;
     level = sProfiles->getVideoEditorExportParamByName("videoeditor.export.level", codec);
     // Check the values retrieved

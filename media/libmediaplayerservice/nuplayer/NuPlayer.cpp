@@ -467,7 +467,6 @@ void NuPlayer::onMessageReceived(const sp<AMessage> &msg) {
         {
             LOGV("kWhatReset");
             Mutex::Autolock autoLock(mLock);
-
             if (mRenderer != NULL) {
                 // There's an edge case where the renderer owns all output
                 // buffers and is paused, therefore the decoder will not read

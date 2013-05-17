@@ -129,8 +129,8 @@ android_media_AudioRecord_setup(JNIEnv *env, jobject thiz, jobject weak_this,
         jint source, jint sampleRateInHertz, jint channels,
         jint audioFormat, jint buffSizeInBytes, jintArray jSession)
 {
-    //ALOGV(">> Entering android_media_AudioRecord_setup");
-    //ALOGV("sampleRate=%d, audioFormat=%d, channels=%x, buffSizeInBytes=%d",
+    //LOGV(">> Entering android_media_AudioRecord_setup");
+    //LOGV("sampleRate=%d, audioFormat=%d, channels=%x, buffSizeInBytes=%d",
     //     sampleRateInHertz, audioFormat, channels,     buffSizeInBytes);
 
     if (!audio_is_input_channel(channels)) {
@@ -279,7 +279,7 @@ android_media_AudioRecord_stop(JNIEnv *env, jobject thiz)
     }
 
     lpRecorder->stop();
-    //ALOGV("Called lpRecorder->stop()");
+    //LOGV("Called lpRecorder->stop()");
 }
 
 
@@ -300,14 +300,14 @@ static void android_media_AudioRecord_release(JNIEnv *env,  jobject thiz) {
 
     // delete the AudioRecord object
     if (lpRecorder) {
-        ALOGV("About to delete lpRecorder: %x\n", (int)lpRecorder);
+        LOGV("About to delete lpRecorder: %x\n", (int)lpRecorder);
         lpRecorder->stop();
         delete lpRecorder;
     }
     
     // delete the callback information
     if (lpCookie) {
-        ALOGV("deleting lpCookie: %x\n", (int)lpCookie);
+        LOGV("deleting lpCookie: %x\n", (int)lpCookie);
         env->DeleteGlobalRef(lpCookie->audioRecord_class);
         env->DeleteGlobalRef(lpCookie->audioRecord_ref);
         delete lpCookie;
@@ -378,7 +378,7 @@ static jint android_media_AudioRecord_readInShortArray(JNIEnv *env,  jobject thi
 static jint android_media_AudioRecord_readInDirectBuffer(JNIEnv *env,  jobject thiz,
                                                   jobject jBuffer, jint sizeInBytes) {
     AudioRecord *lpRecorder = NULL;
-    //ALOGV("Entering android_media_AudioRecord_readInBuffer");
+    //LOGV("Entering android_media_AudioRecord_readInBuffer");
 
     // get the audio recorder from which we'll read new audio samples
     lpRecorder = 
@@ -393,7 +393,7 @@ static jint android_media_AudioRecord_readInDirectBuffer(JNIEnv *env,  jobject t
         ALOGE("Buffer direct access is not supported, can't record");
         return 0;
     }
-    //ALOGV("capacity = %ld", capacity);
+    //LOGV("capacity = %ld", capacity);
     jbyte* nativeFromJavaBuf = (jbyte*) env->GetDirectBufferAddress(jBuffer);
     if(nativeFromJavaBuf==NULL) {
         ALOGE("Buffer direct access is not supported, can't record");
@@ -485,7 +485,7 @@ static jint android_media_AudioRecord_get_pos_update_period(JNIEnv *env,  jobjec
 static jint android_media_AudioRecord_get_min_buff_size(JNIEnv *env,  jobject thiz,
     jint sampleRateInHertz, jint nbChannels, jint audioFormat) {
 
-    ALOGV(">> android_media_AudioRecord_get_min_buff_size(%d, %d, %d)", sampleRateInHertz, nbChannels, audioFormat);
+    LOGV(">> android_media_AudioRecord_get_min_buff_size(%d, %d, %d)", sampleRateInHertz, nbChannels, audioFormat);
 
     int frameCount = 0;
     status_t result = AudioRecord::getMinFrameCount(&frameCount,

@@ -31,7 +31,7 @@ namespace android {
 
 status_t MediaRecorder::setCamera(const sp<ICamera>& camera, const sp<ICameraRecordingProxy>& proxy)
 {
-    ALOGV("setCamera(%p,%p)", camera.get(), proxy.get());
+    LOGV("setCamera(%p,%p)", camera.get(), proxy.get());
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -43,7 +43,7 @@ status_t MediaRecorder::setCamera(const sp<ICamera>& camera, const sp<ICameraRec
 
     status_t ret = mMediaRecorder->setCamera(camera, proxy);
     if (OK != ret) {
-        ALOGV("setCamera failed: %d", ret);
+        LOGV("setCamera failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -52,7 +52,7 @@ status_t MediaRecorder::setCamera(const sp<ICamera>& camera, const sp<ICameraRec
 
 status_t MediaRecorder::setPreviewSurface(const sp<Surface>& surface)
 {
-    ALOGV("setPreviewSurface(%p)", surface.get());
+    LOGV("setPreviewSurface(%p)", surface.get());
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -68,7 +68,7 @@ status_t MediaRecorder::setPreviewSurface(const sp<Surface>& surface)
 
     status_t ret = mMediaRecorder->setPreviewSurface(surface);
     if (OK != ret) {
-        ALOGV("setPreviewSurface failed: %d", ret);
+        LOGV("setPreviewSurface failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -77,7 +77,7 @@ status_t MediaRecorder::setPreviewSurface(const sp<Surface>& surface)
 
 status_t MediaRecorder::init()
 {
-    ALOGV("init");
+    LOGV("init");
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -89,14 +89,14 @@ status_t MediaRecorder::init()
 
     status_t ret = mMediaRecorder->init();
     if (OK != ret) {
-        ALOGV("init failed: %d", ret);
+        LOGV("init failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
 
     ret = mMediaRecorder->setListener(this);
     if (OK != ret) {
-        ALOGV("setListener failed: %d", ret);
+        LOGV("setListener failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -107,7 +107,7 @@ status_t MediaRecorder::init()
 
 status_t MediaRecorder::setVideoSource(int vs)
 {
-    ALOGV("setVideoSource(%d)", vs);
+    LOGV("setVideoSource(%d)", vs);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -117,7 +117,7 @@ status_t MediaRecorder::setVideoSource(int vs)
         return INVALID_OPERATION;
     }
     if (mCurrentState & MEDIA_RECORDER_IDLE) {
-        ALOGV("Call init() since the media recorder is not initialized yet");
+        LOGV("Call init() since the media recorder is not initialized yet");
         status_t ret = init();
         if (OK != ret) {
             return ret;
@@ -132,7 +132,7 @@ status_t MediaRecorder::setVideoSource(int vs)
     status_t ret = mMediaRecorder->setVideoSource(vs);
 
     if (OK != ret) {
-        ALOGV("setVideoSource failed: %d", ret);
+        LOGV("setVideoSource failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -142,13 +142,13 @@ status_t MediaRecorder::setVideoSource(int vs)
 
 status_t MediaRecorder::setAudioSource(int as)
 {
-    ALOGV("setAudioSource(%d)", as);
+    LOGV("setAudioSource(%d)", as);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
     }
     if (mCurrentState & MEDIA_RECORDER_IDLE) {
-        ALOGV("Call init() since the media recorder is not initialized yet");
+        LOGV("Call init() since the media recorder is not initialized yet");
         status_t ret = init();
         if (OK != ret) {
             return ret;
@@ -165,7 +165,7 @@ status_t MediaRecorder::setAudioSource(int as)
 
     status_t ret = mMediaRecorder->setAudioSource(as);
     if (OK != ret) {
-        ALOGV("setAudioSource failed: %d", ret);
+        LOGV("setAudioSource failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -175,7 +175,7 @@ status_t MediaRecorder::setAudioSource(int as)
 
 status_t MediaRecorder::setOutputFormat(int of)
 {
-    ALOGV("setOutputFormat(%d)", of);
+    LOGV("setOutputFormat(%d)", of);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -201,7 +201,7 @@ status_t MediaRecorder::setOutputFormat(int of)
 
 status_t MediaRecorder::setVideoEncoder(int ve)
 {
-    ALOGV("setVideoEncoder(%d)", ve);
+    LOGV("setVideoEncoder(%d)", ve);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -221,7 +221,7 @@ status_t MediaRecorder::setVideoEncoder(int ve)
 
     status_t ret = mMediaRecorder->setVideoEncoder(ve);
     if (OK != ret) {
-        ALOGV("setVideoEncoder failed: %d", ret);
+        LOGV("setVideoEncoder failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -231,7 +231,7 @@ status_t MediaRecorder::setVideoEncoder(int ve)
 
 status_t MediaRecorder::setAudioEncoder(int ae)
 {
-    ALOGV("setAudioEncoder(%d)", ae);
+    LOGV("setAudioEncoder(%d)", ae);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -251,7 +251,7 @@ status_t MediaRecorder::setAudioEncoder(int ae)
 
     status_t ret = mMediaRecorder->setAudioEncoder(ae);
     if (OK != ret) {
-        ALOGV("setAudioEncoder failed: %d", ret);
+        LOGV("setAudioEncoder failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -261,7 +261,7 @@ status_t MediaRecorder::setAudioEncoder(int ae)
 
 status_t MediaRecorder::setOutputFile(const char* path)
 {
-    ALOGV("setOutputFile(%s)", path);
+    LOGV("setOutputFile(%s)", path);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -277,7 +277,7 @@ status_t MediaRecorder::setOutputFile(const char* path)
 
     status_t ret = mMediaRecorder->setOutputFile(path);
     if (OK != ret) {
-        ALOGV("setOutputFile failed: %d", ret);
+        LOGV("setOutputFile failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -287,7 +287,7 @@ status_t MediaRecorder::setOutputFile(const char* path)
 
 status_t MediaRecorder::setOutputFile(int fd, int64_t offset, int64_t length)
 {
-    ALOGV("setOutputFile(%d, %lld, %lld)", fd, offset, length);
+    LOGV("setOutputFile(%d, %lld, %lld)", fd, offset, length);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -314,7 +314,7 @@ status_t MediaRecorder::setOutputFile(int fd, int64_t offset, int64_t length)
 
     status_t ret = mMediaRecorder->setOutputFile(fd, offset, length);
     if (OK != ret) {
-        ALOGV("setOutputFile failed: %d", ret);
+        LOGV("setOutputFile failed: %d", ret);
         mCurrentState = MEDIA_RECORDER_ERROR;
         return ret;
     }
@@ -324,7 +324,7 @@ status_t MediaRecorder::setOutputFile(int fd, int64_t offset, int64_t length)
 
 status_t MediaRecorder::setVideoSize(int width, int height)
 {
-    ALOGV("setVideoSize(%d, %d)", width, height);
+    LOGV("setVideoSize(%d, %d)", width, height);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -367,7 +367,7 @@ sp<ISurfaceTexture> MediaRecorder::
 
 status_t MediaRecorder::setVideoFrameRate(int frames_per_second)
 {
-    ALOGV("setVideoFrameRate(%d)", frames_per_second);
+    LOGV("setVideoFrameRate(%d)", frames_per_second);
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -391,7 +391,7 @@ status_t MediaRecorder::setVideoFrameRate(int frames_per_second)
 }
 
 status_t MediaRecorder::setParameters(const String8& params) {
-    ALOGV("setParameters(%s)", params.string());
+    LOGV("setParameters(%s)", params.string());
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -419,7 +419,7 @@ status_t MediaRecorder::setParameters(const String8& params) {
 
 status_t MediaRecorder::prepare()
 {
-    ALOGV("prepare");
+    LOGV("prepare");
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -458,7 +458,7 @@ status_t MediaRecorder::prepare()
 
 status_t MediaRecorder::getMaxAmplitude(int* max)
 {
-    ALOGV("getMaxAmplitude");
+    LOGV("getMaxAmplitude");
     if(mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -479,7 +479,7 @@ status_t MediaRecorder::getMaxAmplitude(int* max)
 
 status_t MediaRecorder::start()
 {
-    ALOGV("start");
+    LOGV("start");
     if (mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -501,7 +501,7 @@ status_t MediaRecorder::start()
 
 status_t MediaRecorder::stop()
 {
-    ALOGV("stop");
+    LOGV("stop");
     if (mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -529,7 +529,7 @@ status_t MediaRecorder::stop()
 // Reset should be OK in any state
 status_t MediaRecorder::reset()
 {
-    ALOGV("reset");
+    LOGV("reset");
     if (mMediaRecorder == NULL) {
         ALOGE("media recorder is not initialized yet");
         return INVALID_OPERATION;
@@ -565,7 +565,7 @@ status_t MediaRecorder::reset()
 
 status_t MediaRecorder::close()
 {
-    ALOGV("close");
+    LOGV("close");
     if (!(mCurrentState & MEDIA_RECORDER_INITIALIZED)) {
         ALOGE("close called in an invalid state: %d", mCurrentState);
         return INVALID_OPERATION;
@@ -583,7 +583,7 @@ status_t MediaRecorder::close()
 
 status_t MediaRecorder::doReset()
 {
-    ALOGV("doReset");
+    LOGV("doReset");
     status_t ret = mMediaRecorder->reset();
     if (OK != ret) {
         ALOGE("doReset failed: %d", ret);
@@ -597,7 +597,7 @@ status_t MediaRecorder::doReset()
 
 void MediaRecorder::doCleanUp()
 {
-    ALOGV("doCleanUp");
+    LOGV("doCleanUp");
     mIsAudioSourceSet  = false;
     mIsVideoSourceSet  = false;
     mIsAudioEncoderSet = false;
@@ -608,7 +608,7 @@ void MediaRecorder::doCleanUp()
 // Release should be OK in any state
 status_t MediaRecorder::release()
 {
-    ALOGV("release");
+    LOGV("release");
     if (mMediaRecorder != NULL) {
         return mMediaRecorder->release();
     }
@@ -617,7 +617,7 @@ status_t MediaRecorder::release()
 
 MediaRecorder::MediaRecorder() : mSurfaceMediaSource(NULL)
 {
-    ALOGV("constructor");
+    LOGV("constructor");
 
     const sp<IMediaPlayerService>& service(getMediaPlayerService());
     if (service != NULL) {
@@ -638,7 +638,7 @@ status_t MediaRecorder::initCheck()
 
 MediaRecorder::~MediaRecorder()
 {
-    ALOGV("destructor");
+    LOGV("destructor");
     if (mMediaRecorder != NULL) {
         mMediaRecorder.clear();
     }
@@ -650,7 +650,7 @@ MediaRecorder::~MediaRecorder()
 
 status_t MediaRecorder::setListener(const sp<MediaRecorderListener>& listener)
 {
-    ALOGV("setListener");
+    LOGV("setListener");
     Mutex::Autolock _l(mLock);
     mListener = listener;
 
@@ -659,7 +659,7 @@ status_t MediaRecorder::setListener(const sp<MediaRecorderListener>& listener)
 
 void MediaRecorder::notify(int msg, int ext1, int ext2)
 {
-    ALOGV("message received msg=%d, ext1=%d, ext2=%d", msg, ext1, ext2);
+    LOGV("message received msg=%d, ext1=%d, ext2=%d", msg, ext1, ext2);
 
     sp<MediaRecorderListener> listener;
     mLock.lock();
@@ -668,15 +668,15 @@ void MediaRecorder::notify(int msg, int ext1, int ext2)
 
     if (listener != NULL) {
         Mutex::Autolock _l(mNotifyLock);
-        ALOGV("callback application");
+        LOGV("callback application");
         listener->notify(msg, ext1, ext2);
-        ALOGV("back from callback");
+        LOGV("back from callback");
     }
 }
 
 void MediaRecorder::died()
 {
-    ALOGV("died");
+    LOGV("died");
     notify(MEDIA_RECORDER_EVENT_ERROR, MEDIA_ERROR_SERVER_DIED, 0);
 }
 

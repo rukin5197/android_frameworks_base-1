@@ -190,7 +190,7 @@ try_again:
 
     assert(mBasePtr != NULL);
 
-    ALOGV("MAP: base %p/%d data %p/%d\n",
+    LOGV("MAP: base %p/%d data %p/%d\n",
         mBasePtr, (int) mBaseLength, mDataPtr, (int) mDataLength);
 
     return true;

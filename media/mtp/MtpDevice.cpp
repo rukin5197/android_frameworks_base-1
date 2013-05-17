@@ -765,7 +765,7 @@ fail:
 }
 
 bool MtpDevice::sendRequest(MtpOperationCode operation) {
-    ALOGV("sendRequest: %s\n", MtpDebug::getOperationCodeName(operation));
+    LOGV("sendRequest: %s\n", MtpDebug::getOperationCodeName(operation));
     mReceivedResponse = false;
     mRequest.setOperationCode(operation);
     if (mTransactionID > 0)
@@ -776,7 +776,7 @@ bool MtpDevice::sendRequest(MtpOperationCode operation) {
 }
 
 bool MtpDevice::sendData() {
-    ALOGV("sendData\n");
+    LOGV("sendData\n");
     mData.setOperationCode(mRequest.getOperationCode());
     mData.setTransactionID(mRequest.getTransactionID());
     int ret = mData.write(mRequestOut);
@@ -787,7 +787,7 @@ bool MtpDevice::sendData() {
 bool MtpDevice::readData() {
     mData.reset();
     int ret = mData.read(mRequestIn1);
-    ALOGV("readData returned %d\n", ret);
+    LOGV("readData returned %d\n", ret);
     if (ret >= MTP_CONTAINER_HEADER_SIZE) {
         if (mData.getContainerType() == MTP_CONTAINER_TYPE_RESPONSE) {
             ALOGD("got response packet instead of data packet");
@@ -801,7 +801,7 @@ bool MtpDevice::readData() {
         return true;
     }
     else {
-        ALOGV("readResponse failed\n");
+        LOGV("readResponse failed\n");
         return false;
     }
 }
@@ -813,7 +813,7 @@ bool MtpDevice::writeDataHeader(MtpOperationCode operation, int dataLength) {
 }
 
 MtpResponseCode MtpDevice::readResponse() {
-    ALOGV("readResponse\n");
+    LOGV("readResponse\n");
     if (mReceivedResponse) {
         mReceivedResponse = false;
         return mResponse.getResponseCode();

@@ -253,7 +253,7 @@ status_t ZipFile::readCentralDir(void)
         if (buf[i] == 0x50 &&
             ZipEntry::getLongLE(&buf[i]) == EndOfCentralDir::kSignature)
         {
-            ALOGV("+++ Found EOCD at buf+%d\n", i);
+            LOGV("+++ Found EOCD at buf+%d\n", i);
             break;
         }
     }
@@ -303,7 +303,7 @@ status_t ZipFile::readCentralDir(void)
     /*
      * Loop through and read the central dir entries.
      */
-    ALOGV("Scanning %d entries...\n", mEOCD.mTotalNumEntries);
+    LOGV("Scanning %d entries...\n", mEOCD.mTotalNumEntries);
     int entry;
     for (entry = 0; entry < mEOCD.mTotalNumEntries; entry++) {
         ZipEntry* pEntry = new ZipEntry;
@@ -334,7 +334,7 @@ status_t ZipFile::readCentralDir(void)
             result = UNKNOWN_ERROR;
             goto bail;
         }
-        ALOGV("+++ EOCD read check passed\n");
+        LOGV("+++ EOCD read check passed\n");
     }
 
 bail:
@@ -799,7 +799,7 @@ status_t ZipFile::compressFpToFp(FILE* dstFp, FILE* srcFp,
 
         /* only read if the input buffer is empty */
         if (zstream.avail_in == 0 && !atEof) {
-            ALOGV("+++ reading %d bytes\n", (int)kBufSize);
+            LOGV("+++ reading %d bytes\n", (int)kBufSize);
             if (data) {
                 getSize = size > kBufSize ? kBufSize : size;
                 memcpy(inBuf, data, getSize);
@@ -813,7 +813,7 @@ status_t ZipFile::compressFpToFp(FILE* dstFp, FILE* srcFp,
                 }
             }
             if (getSize < kBufSize) {
-                ALOGV("+++  got %d bytes, EOF reached\n",
+                LOGV("+++  got %d bytes, EOF reached\n",
                     (int)getSize);
                 atEof = true;
             }
@@ -840,7 +840,7 @@ status_t ZipFile::compressFpToFp(FILE* dstFp, FILE* srcFp,
         if (zstream.avail_out == 0 ||
             (zerr == Z_STREAM_END && zstream.avail_out != (uInt) kBufSize))
         {
-            ALOGV("+++ writing %d bytes\n", (int) (zstream.next_out - outBuf));
+            LOGV("+++ writing %d bytes\n", (int) (zstream.next_out - outBuf));
             if (fwrite(outBuf, 1, zstream.next_out - outBuf, dstFp) !=
                 (size_t)(zstream.next_out - outBuf))
             {
