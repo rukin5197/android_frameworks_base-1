@@ -136,7 +136,7 @@ JNISurfaceTextureContext::~JNISurfaceTextureContext()
         env->DeleteGlobalRef(mWeakThiz);
         env->DeleteGlobalRef(mClazz);
     } else {
-        ALOGW("leaking JNI object references");
+        LOGW("leaking JNI object references");
     }
     if (needsDetach) {
         detachJNI();
@@ -150,7 +150,7 @@ void JNISurfaceTextureContext::onFrameAvailable()
     if (env != NULL) {
         env->CallStaticVoidMethod(mClazz, fields.postEvent, mWeakThiz);
     } else {
-        ALOGW("onFrameAvailable event will not posted");
+        LOGW("onFrameAvailable event will not posted");
     }
     if (needsDetach) {
         detachJNI();

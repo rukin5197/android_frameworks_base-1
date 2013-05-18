@@ -477,7 +477,7 @@ static int wait_dexopt(pid_t pid, const char* apk_path)
         }
     }
     if (got_pid != pid) {
-        ALOGW("waitpid failed: wanted %d, got %d: %s\n",
+        LOGW("waitpid failed: wanted %d, got %d: %s\n",
             (int) pid, (int) got_pid, strerror(errno));
         return 1;
     }
@@ -486,7 +486,7 @@ static int wait_dexopt(pid_t pid, const char* apk_path)
         LOGV("DexInv: --- END '%s' (success) ---\n", apk_path);
         return 0;
     } else {
-        ALOGW("DexInv: --- END '%s' --- status=0x%04x, process failed\n",
+        LOGW("DexInv: --- END '%s' --- status=0x%04x, process failed\n",
             apk_path, status);
         return status;      /* always nonzero */
     }
@@ -609,7 +609,7 @@ void mkinnerdirs(char* path, int basepos, mode_t mode, int uid, int gid,
                 if (mkdir(path, mode) == 0) {
                     chown(path, uid, gid);
                 } else {
-                    ALOGW("Unable to make directory %s: %s\n", path, strerror(errno));
+                    LOGW("Unable to make directory %s: %s\n", path, strerror(errno));
                 }
             }
             path[basepos] = '/';
@@ -630,7 +630,7 @@ int movefileordir(char* srcpath, char* dstpath, int dstbasepos,
     int dstend = strlen(dstpath);
     
     if (lstat(srcpath, statbuf) < 0) {
-        ALOGW("Unable to stat %s: %s\n", srcpath, strerror(errno));
+        LOGW("Unable to stat %s: %s\n", srcpath, strerror(errno));
         return 1;
     }
     
@@ -645,7 +645,7 @@ int movefileordir(char* srcpath, char* dstpath, int dstbasepos,
                 return 1;
             }
         } else {
-            ALOGW("Unable to rename %s to %s: %s\n",
+            LOGW("Unable to rename %s to %s: %s\n",
                 srcpath, dstpath, strerror(errno));
             return 1;
         }
@@ -654,7 +654,7 @@ int movefileordir(char* srcpath, char* dstpath, int dstbasepos,
 
     d = opendir(srcpath);
     if (d == NULL) {
-        ALOGW("Unable to opendir %s: %s\n", srcpath, strerror(errno));
+        LOGW("Unable to opendir %s: %s\n", srcpath, strerror(errno));
         return 1;
     }
 
@@ -669,12 +669,12 @@ int movefileordir(char* srcpath, char* dstpath, int dstbasepos,
         }
         
         if ((srcend+strlen(name)) >= (PKG_PATH_MAX-2)) {
-            ALOGW("Source path too long; skipping: %s/%s\n", srcpath, name);
+            LOGW("Source path too long; skipping: %s/%s\n", srcpath, name);
             continue;
         }
         
         if ((dstend+strlen(name)) >= (PKG_PATH_MAX-2)) {
-            ALOGW("Destination path too long; skipping: %s/%s\n", dstpath, name);
+            LOGW("Destination path too long; skipping: %s/%s\n", dstpath, name);
             continue;
         }
         
@@ -730,7 +730,7 @@ int movefiles()
         } else {
             subfd = openat(dfd, name, O_RDONLY);
             if (subfd < 0) {
-                ALOGW("Unable to open update commands at %s%s\n",
+                LOGW("Unable to open update commands at %s%s\n",
                         UPDATE_COMMANDS_DIR_PREFIX, name);
                 continue;
             }
@@ -756,7 +756,7 @@ int movefiles()
                         // skip comments and empty lines.
                     } else if (hasspace) {
                         if (dstpkg[0] == 0) {
-                            ALOGW("Path before package line in %s%s: %s\n",
+                            LOGW("Path before package line in %s%s: %s\n",
                                     UPDATE_COMMANDS_DIR_PREFIX, name, buf+bufp);
                         } else if (srcpkg[0] == 0) {
                             // Skip -- source package no longer exists.
@@ -772,7 +772,7 @@ int movefiles()
                     } else {
                         char* div = strchr(buf+bufp, ':');
                         if (div == NULL) {
-                            ALOGW("Bad package spec in %s%s; no ':' sep: %s\n",
+                            LOGW("Bad package spec in %s%s; no ':' sep: %s\n",
                                     UPDATE_COMMANDS_DIR_PREFIX, name, buf+bufp);
                         } else {
                             *div = 0;
@@ -781,14 +781,14 @@ int movefiles()
                                 strcpy(dstpkg, buf+bufp);
                             } else {
                                 srcpkg[0] = dstpkg[0] = 0;
-                                ALOGW("Package name too long in %s%s: %s\n",
+                                LOGW("Package name too long in %s%s: %s\n",
                                         UPDATE_COMMANDS_DIR_PREFIX, name, buf+bufp);
                             }
                             if (strlen(div) < PKG_NAME_MAX) {
                                 strcpy(srcpkg, div);
                             } else {
                                 srcpkg[0] = dstpkg[0] = 0;
-                                ALOGW("Package name too long in %s%s: %s\n",
+                                LOGW("Package name too long in %s%s: %s\n",
                                         UPDATE_COMMANDS_DIR_PREFIX, name, div);
                             }
                             if (srcpkg[0] != 0) {
@@ -799,7 +799,7 @@ int movefiles()
                                     }
                                 } else {
                                     srcpkg[0] = 0;
-                                    ALOGW("Can't create path %s in %s%s\n",
+                                    LOGW("Can't create path %s in %s%s\n",
                                             div, UPDATE_COMMANDS_DIR_PREFIX, name);
                                 }
                                 if (srcpkg[0] != 0) {
@@ -816,7 +816,7 @@ int movefiles()
                                         }
                                     } else {
                                         srcpkg[0] = 0;
-                                        ALOGW("Can't create path %s in %s%s\n",
+                                        LOGW("Can't create path %s in %s%s\n",
                                                 div, UPDATE_COMMANDS_DIR_PREFIX, name);
                                     }
                                 }
@@ -829,7 +829,7 @@ int movefiles()
                 } else {
                     if (bufp == 0) {
                         if (bufp < bufe) {
-                            ALOGW("Line too long in %s%s, skipping: %s\n",
+                            LOGW("Line too long in %s%s, skipping: %s\n",
                                     UPDATE_COMMANDS_DIR_PREFIX, name, buf);
                         }
                     } else if (bufp < bufe) {
@@ -839,7 +839,7 @@ int movefiles()
                     }
                     readlen = read(subfd, buf+bufe, PKG_PATH_MAX-bufe);
                     if (readlen < 0) {
-                        ALOGW("Failure reading update commands in %s%s: %s\n",
+                        LOGW("Failure reading update commands in %s%s: %s\n",
                                 UPDATE_COMMANDS_DIR_PREFIX, name, strerror(errno));
                         break;
                     } else if (readlen == 0) {

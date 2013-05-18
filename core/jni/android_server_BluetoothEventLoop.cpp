@@ -642,7 +642,7 @@ static void handleWatchRemove(native_data_t *nat) {
             return;
         }
     }
-    ALOGW("WatchRemove given with unknown watch");
+    LOGW("WatchRemove given with unknown watch");
 }
 
 static void *eventLoopMain(void *ptr) {
@@ -730,7 +730,7 @@ static jboolean startEventLoopNative(JNIEnv *env, jobject object) {
     nat->running = false;
 
     if (nat->pollData) {
-        ALOGW("trying to start EventLoop a second time!");
+        LOGW("trying to start EventLoop a second time!");
         pthread_mutex_unlock( &(nat->thread_mutex) );
         return JNI_FALSE;
     }

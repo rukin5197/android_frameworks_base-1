@@ -131,7 +131,7 @@ protected:
         if (window != NULL) {
             native_window_set_buffers_format(window, 0);
             if (native_window_api_disconnect(window, NATIVE_WINDOW_API_EGL)) {
-                ALOGW("EGLNativeWindowType %p disconnect failed", window);
+                LOGW("EGLNativeWindowType %p disconnect failed", window);
             }
         }
     }

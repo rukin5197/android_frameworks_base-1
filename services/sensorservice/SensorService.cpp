@@ -299,7 +299,7 @@ bool SensorService::threadLoop()
         }
     } while (count >= 0 || Thread::exitPending());
 
-    ALOGW("Exiting SensorService::threadLoop => aborting...");
+    LOGW("Exiting SensorService::threadLoop => aborting...");
     abort();
     return false;
 }
@@ -607,7 +607,7 @@ status_t SensorService::SensorEventConnection::sendEvents(
     if (size == -EAGAIN) {
         // the destination doesn't accept events anymore, it's probably
         // full. For now, we just drop the events on the floor.
-        //ALOGW("dropping %d events on the floor", count);
+        //LOGW("dropping %d events on the floor", count);
         return size;
     }
 

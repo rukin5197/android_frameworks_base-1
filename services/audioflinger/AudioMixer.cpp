@@ -369,7 +369,7 @@ void AudioMixer::process()
 
 void AudioMixer::process__validate(state_t* state)
 {
-    ALOGW_IF(!state->needsChanged,
+    LOGW_IF(!state->needsChanged,
         "in process__validate() but nothing's invalid");
 
     uint32_t changed = state->needsChanged;

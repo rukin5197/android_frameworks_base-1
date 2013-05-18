@@ -365,7 +365,7 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
                 }
 
                 // if buffer is FREE it CANNOT be current
-                ALOGW_IF((state == BufferSlot::FREE) && (mCurrentTexture==i),
+                LOGW_IF((state == BufferSlot::FREE) && (mCurrentTexture==i),
                         "dequeueBuffer: buffer %d is both FREE and current!",
                         i);
 
@@ -1110,7 +1110,7 @@ void SurfaceTexture::freeBufferLocked(int i) {
 }
 
 void SurfaceTexture::freeAllBuffersLocked() {
-    ALOGW_IF(!mQueue.isEmpty(),
+    LOGW_IF(!mQueue.isEmpty(),
             "freeAllBuffersLocked called but mQueue is not empty");
     mCurrentTexture = INVALID_BUFFER_SLOT;
     for (int i = 0; i < NUM_BUFFER_SLOTS; i++) {
@@ -1122,7 +1122,7 @@ void SurfaceTexture::freeAllBuffersLocked() {
 }
 
 void SurfaceTexture::freeAllBuffersExceptHeadLocked() {
-    ALOGW_IF(!mQueue.isEmpty(),
+    LOGW_IF(!mQueue.isEmpty(),
             "freeAllBuffersExceptCurrentLocked called but mQueue is not empty");
     int head = -1;
     if (!mQueue.empty()) {

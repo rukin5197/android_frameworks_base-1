@@ -449,7 +449,7 @@ void TextLayoutCacheValue::computeValuesWithHarfbuzz(SkPaint* paint, const UChar
                         isRTL = (paraDir == 1);
                         useSingleRun = true;
                     } else if (!U_SUCCESS(status) || rc < 1) {
-                        ALOGW("computeValuesWithHarfbuzz -- need to force to single run");
+                        LOGW("computeValuesWithHarfbuzz -- need to force to single run");
                         isRTL = (paraDir == 1);
                         useSingleRun = true;
                     } else {
@@ -462,7 +462,7 @@ void TextLayoutCacheValue::computeValuesWithHarfbuzz(SkPaint* paint, const UChar
                             if (startRun == -1 || lengthRun == -1) {
                                 // Something went wrong when getting the visual run, need to clear
                                 // already computed data before doing a single run pass
-                                ALOGW("computeValuesWithHarfbuzz -- visual run is not valid");
+                                LOGW("computeValuesWithHarfbuzz -- visual run is not valid");
                                 outGlyphs->clear();
                                 outAdvances->clear();
                                 *outTotalAdvance = 0;
@@ -500,13 +500,13 @@ void TextLayoutCacheValue::computeValuesWithHarfbuzz(SkPaint* paint, const UChar
                         }
                     }
                 } else {
-                    ALOGW("computeValuesWithHarfbuzz -- cannot set Para");
+                    LOGW("computeValuesWithHarfbuzz -- cannot set Para");
                     useSingleRun = true;
                     isRTL = (bidiReq = 1) || (bidiReq = UBIDI_DEFAULT_RTL);
                 }
                 ubidi_close(bidi);
             } else {
-                ALOGW("computeValuesWithHarfbuzz -- cannot ubidi_open()");
+                LOGW("computeValuesWithHarfbuzz -- cannot ubidi_open()");
                 useSingleRun = true;
                 isRTL = (bidiReq = 1) || (bidiReq = UBIDI_DEFAULT_RTL);
             }

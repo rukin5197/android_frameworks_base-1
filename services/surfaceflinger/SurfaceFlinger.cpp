@@ -502,7 +502,7 @@ void SurfaceFlinger::postFramebuffer()
 {
     // this should never happen. we do the flip anyways so we don't
     // risk to cause a deadlock with hwc
-    ALOGW_IF(mSwapRegion.isEmpty(), "mSwapRegion is empty");
+    LOGW_IF(mSwapRegion.isEmpty(), "mSwapRegion is empty");
     const DisplayHardware& hw(graphicPlane(0).displayHardware());
     const nsecs_t now = systemTime();
 #ifdef QCOM_HDMI_OUT
@@ -1348,7 +1348,7 @@ void SurfaceFlinger::setTransactionState(const Vector<ComposerState>& state,
             mCurrentState.orientation = orientation;
             transactionFlags |= eTransactionNeeded;
         } else if (orientation != eOrientationUnchanged) {
-            ALOGW("setTransactionState: ignoring unrecognized orientation: %d",
+            LOGW("setTransactionState: ignoring unrecognized orientation: %d",
                     orientation);
         }
     }
@@ -1374,7 +1374,7 @@ void SurfaceFlinger::setTransactionState(const Vector<ComposerState>& state,
             if (CC_UNLIKELY(err != NO_ERROR)) {
                 // just in case something goes wrong in SF, return to the
                 // called after a few seconds.
-                ALOGW_IF(err == TIMED_OUT, "closeGlobalTransaction timed out!");
+                LOGW_IF(err == TIMED_OUT, "closeGlobalTransaction timed out!");
                 mTransationPending = false;
                 break;
             }

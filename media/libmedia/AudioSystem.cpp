@@ -56,7 +56,7 @@ const sp<IAudioFlinger>& AudioSystem::get_audio_flinger()
             binder = sm->getService(String16("media.audio_flinger"));
             if (binder != 0)
                 break;
-            ALOGW("AudioFlinger not published, waiting...");
+            LOGW("AudioFlinger not published, waiting...");
             usleep(500000); // 0.5 s
         } while(true);
         if (gAudioFlingerClient == NULL) {
@@ -383,7 +383,7 @@ void AudioSystem::AudioFlingerClient::binderDied(const wp<IBinder>& who) {
     if (gAudioErrorCallback) {
         gAudioErrorCallback(DEAD_OBJECT);
     }
-    ALOGW("AudioFlinger server died!");
+    LOGW("AudioFlinger server died!");
 }
 
 void AudioSystem::AudioFlingerClient::ioConfigChanged(int event, int ioHandle, void *param2) {
@@ -419,7 +419,7 @@ void AudioSystem::AudioFlingerClient::ioConfigChanged(int event, int ioHandle, v
         } break;
     case OUTPUT_CLOSED: {
         if (gOutputs.indexOfKey(ioHandle) < 0) {
-            ALOGW("ioConfigChanged() closing unknow output! %d", ioHandle);
+            LOGW("ioConfigChanged() closing unknow output! %d", ioHandle);
             break;
         }
         LOGV("ioConfigChanged() output %d closed", ioHandle);
@@ -435,7 +435,7 @@ void AudioSystem::AudioFlingerClient::ioConfigChanged(int event, int ioHandle, v
     case OUTPUT_CONFIG_CHANGED: {
         int index = gOutputs.indexOfKey(ioHandle);
         if (index < 0) {
-            ALOGW("ioConfigChanged() modifying unknow output! %d", ioHandle);
+            LOGW("ioConfigChanged() modifying unknow output! %d", ioHandle);
             break;
         }
         if (param2 == 0) break;
@@ -491,7 +491,7 @@ const sp<IAudioPolicyService>& AudioSystem::get_audio_policy_service()
             binder = sm->getService(String16("media.audio_policy"));
             if (binder != 0)
                 break;
-            ALOGW("AudioPolicyService not published, waiting...");
+            LOGW("AudioPolicyService not published, waiting...");
             usleep(500000); // 0.5 s
         } while(true);
         if (gAudioPolicyServiceClient == NULL) {
@@ -791,7 +791,7 @@ void AudioSystem::AudioPolicyServiceClient::binderDied(const wp<IBinder>& who) {
     Mutex::Autolock _l(AudioSystem::gLock);
     AudioSystem::gAudioPolicyService.clear();
 
-    ALOGW("AudioPolicyService server died!");
+    LOGW("AudioPolicyService server died!");
 }
 
 }; // namespace android

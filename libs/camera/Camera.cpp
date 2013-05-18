@@ -47,7 +47,7 @@ const sp<ICameraService>& Camera::getCameraService()
             binder = sm->getService(String16("media.camera"));
             if (binder != 0)
                 break;
-            ALOGW("CameraService not published, waiting...");
+            LOGW("CameraService not published, waiting...");
             usleep(500000); // 0.5 s
         } while(true);
         if (mDeathNotifier == NULL) {
@@ -417,13 +417,13 @@ void Camera::dataCallbackTimestamp(nsecs_t timestamp, int32_t msgType, const sp<
     if (listener != NULL) {
         listener->postDataTimestamp(timestamp, msgType, dataPtr);
     } else {
-        ALOGW("No listener was set. Drop a recording frame.");
+        LOGW("No listener was set. Drop a recording frame.");
         releaseRecordingFrame(dataPtr);
     }
 }
 
 void Camera::binderDied(const wp<IBinder>& who) {
-    ALOGW("ICamera died");
+    LOGW("ICamera died");
     notifyCallback(CAMERA_MSG_ERROR, CAMERA_ERROR_SERVER_DIED, 0);
 }
 
@@ -431,7 +431,7 @@ void Camera::DeathNotifier::binderDied(const wp<IBinder>& who) {
     LOGV("binderDied");
     Mutex::Autolock _l(Camera::mLock);
     Camera::mCameraService.clear();
-    ALOGW("Camera server died!");
+    LOGW("Camera server died!");
 }
 
 sp<ICameraRecordingProxy> Camera::getRecordingProxy() {

@@ -768,7 +768,7 @@ status_t SurfaceTextureClient::lock(
                     GRALLOC_USAGE_SW_READ_OFTEN | GRALLOC_USAGE_SW_WRITE_OFTEN,
                     newDirtyRegion.bounds(), &vaddr);
 
-            ALOGW_IF(res, "failed locking buffer (handle = %p)",
+            LOGW_IF(res, "failed locking buffer (handle = %p)",
                     backBuffer->handle);
 
             mLockedBuffer = backBuffer;

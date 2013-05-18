@@ -154,7 +154,7 @@ int EffectCreate(effect_uuid_t *uuid,
     }
     ret = Reverb_Init(module, aux, preset);
     if (ret < 0) {
-        ALOGW("EffectLibCreateEffect() init failed");
+        LOGW("EffectLibCreateEffect() init failed");
         free(module);
         return ret;
     }
@@ -399,7 +399,7 @@ static int Reverb_Command(effect_handle_t self, uint32_t cmdCode, uint32_t cmdSi
         LOGV("Reverb_Command EFFECT_CMD_SET_AUDIO_MODE: %d", *(uint32_t *)pCmdData);
         break;
     default:
-        ALOGW("Reverb_Command invalid command %d",cmdCode);
+        LOGW("Reverb_Command invalid command %d",cmdCode);
         return -EINVAL;
     }
 

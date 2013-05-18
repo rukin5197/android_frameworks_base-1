@@ -359,7 +359,7 @@ void InputReader::addDeviceLocked(nsecs_t when, int32_t deviceId) {
     if (deviceIndex < 0) {
         mDevices.add(deviceId, device);
     } else {
-        ALOGW("Ignoring spurious device added event for deviceId %d.", deviceId);
+        LOGW("Ignoring spurious device added event for deviceId %d.", deviceId);
         delete device;
         return;
     }
@@ -372,7 +372,7 @@ void InputReader::removeDeviceLocked(nsecs_t when, int32_t deviceId) {
         device = mDevices.valueAt(deviceIndex);
         mDevices.removeItemsAt(deviceIndex, 1);
     } else {
-        ALOGW("Ignoring spurious device removed event for deviceId %d.", deviceId);
+        LOGW("Ignoring spurious device removed event for deviceId %d.", deviceId);
         return;
     }
 
@@ -446,7 +446,7 @@ void InputReader::processEventsForDeviceLocked(int32_t deviceId,
         const RawEvent* rawEvents, size_t count) {
     ssize_t deviceIndex = mDevices.indexOfKey(deviceId);
     if (deviceIndex < 0) {
-        ALOGW("Discarding event for unknown deviceId %d.", deviceId);
+        LOGW("Discarding event for unknown deviceId %d.", deviceId);
         return;
     }
 
@@ -1602,7 +1602,7 @@ void MultiTouchMotionAccumulator::process(const RawEvent* rawEvent) {
         if (mCurrentSlot < 0 || size_t(mCurrentSlot) >= mSlotCount) {
 #if DEBUG_POINTERS
             if (newSlot) {
-                ALOGW("MultiTouch device emitted invalid slot index %d but it "
+                LOGW("MultiTouch device emitted invalid slot index %d but it "
                         "should be between 0 and %d; ignoring this slot.",
                         mCurrentSlot, mSlotCount - 1);
             }
@@ -2169,7 +2169,7 @@ void CursorInputMapper::configureParameters() {
         if (cursorModeString == "navigation") {
             mParameters.mode = Parameters::MODE_NAVIGATION;
         } else if (cursorModeString != "pointer" && cursorModeString != "default") {
-            ALOGW("Invalid value for cursor.mode: '%s'", cursorModeString.string());
+            LOGW("Invalid value for cursor.mode: '%s'", cursorModeString.string());
         }
     }
 
@@ -2585,7 +2585,7 @@ void TouchInputMapper::configureParameters() {
         } else if (gestureModeString == "spots") {
             mParameters.gestureMode = Parameters::GESTURE_MODE_SPOTS;
         } else if (gestureModeString != "default") {
-            ALOGW("Invalid value for touch.gestureMode: '%s'", gestureModeString.string());
+            LOGW("Invalid value for touch.gestureMode: '%s'", gestureModeString.string());
         }
     }
 
@@ -2615,7 +2615,7 @@ void TouchInputMapper::configureParameters() {
         } else if (deviceTypeString == "pointer") {
             mParameters.deviceType = Parameters::DEVICE_TYPE_POINTER;
         } else if (deviceTypeString != "default") {
-            ALOGW("Invalid value for touch.deviceType: '%s'", deviceTypeString.string());
+            LOGW("Invalid value for touch.deviceType: '%s'", deviceTypeString.string());
         }
     }
 
@@ -2714,7 +2714,7 @@ void TouchInputMapper::configureSurface(nsecs_t when, bool* outResetNeeded) {
 
     // Ensure we have valid X and Y axes.
     if (!mRawPointerAxes.x.valid || !mRawPointerAxes.y.valid) {
-        ALOGW(INDENT "Touch device '%s' did not report support for X or Y axis!  "
+        LOGW(INDENT "Touch device '%s' did not report support for X or Y axis!  "
                 "The device will be inoperable.", getDeviceName().string());
         mDeviceMode = DEVICE_MODE_DISABLED;
         return;
@@ -3070,7 +3070,7 @@ void TouchInputMapper::configureVirtualKeys() {
         uint32_t flags;
         if (getEventHub()->mapKey(getDeviceId(), virtualKey.scanCode,
                 & keyCode, & flags)) {
-            ALOGW(INDENT "VirtualKey %d: could not obtain key code, ignoring",
+            LOGW(INDENT "VirtualKey %d: could not obtain key code, ignoring",
                     virtualKey.scanCode);
             mVirtualKeys.pop(); // drop the key
             continue;
@@ -3126,7 +3126,7 @@ void TouchInputMapper::parseCalibration() {
         } else if (sizeCalibrationString == "area") {
             out.sizeCalibration = Calibration::SIZE_CALIBRATION_AREA;
         } else if (sizeCalibrationString != "default") {
-            ALOGW("Invalid value for touch.size.calibration: '%s'",
+            LOGW("Invalid value for touch.size.calibration: '%s'",
                     sizeCalibrationString.string());
         }
     }
@@ -3149,7 +3149,7 @@ void TouchInputMapper::parseCalibration() {
         } else if (pressureCalibrationString == "amplitude") {
             out.pressureCalibration = Calibration::PRESSURE_CALIBRATION_AMPLITUDE;
         } else if (pressureCalibrationString != "default") {
-            ALOGW("Invalid value for touch.pressure.calibration: '%s'",
+            LOGW("Invalid value for touch.pressure.calibration: '%s'",
                     pressureCalibrationString.string());
         }
     }
@@ -3168,7 +3168,7 @@ void TouchInputMapper::parseCalibration() {
         } else if (orientationCalibrationString == "vector") {
             out.orientationCalibration = Calibration::ORIENTATION_CALIBRATION_VECTOR;
         } else if (orientationCalibrationString != "default") {
-            ALOGW("Invalid value for touch.orientation.calibration: '%s'",
+            LOGW("Invalid value for touch.orientation.calibration: '%s'",
                     orientationCalibrationString.string());
         }
     }
@@ -3182,7 +3182,7 @@ void TouchInputMapper::parseCalibration() {
         } else if (distanceCalibrationString == "scaled") {
             out.distanceCalibration = Calibration::DISTANCE_CALIBRATION_SCALED;
         } else if (distanceCalibrationString != "default") {
-            ALOGW("Invalid value for touch.distance.calibration: '%s'",
+            LOGW("Invalid value for touch.distance.calibration: '%s'",
                     distanceCalibrationString.string());
         }
     }
@@ -5792,7 +5792,7 @@ void MultiTouchInputMapper::configureRawPointerAxes() {
             && mRawPointerAxes.slot.minValue == 0 && mRawPointerAxes.slot.maxValue > 0) {
         size_t slotCount = mRawPointerAxes.slot.maxValue + 1;
         if (slotCount > MAX_SLOTS) {
-            ALOGW("MultiTouch Device %s reported %d slots but the framework "
+            LOGW("MultiTouch Device %s reported %d slots but the framework "
                     "only supports a maximum of %d slots at this time.",
                     getDeviceName().string(), slotCount, MAX_SLOTS);
             slotCount = MAX_SLOTS;

@@ -99,7 +99,7 @@ void ThreadCpuUsage::sample()
         mStatistics.sample((double) mAccumulator);
         mAccumulator = 0;
     } else {
-        ALOGW("Can't add sample because measurements have never been enabled");
+        LOGW("Can't add sample because measurements have never been enabled");
     }
 }
 
@@ -119,7 +119,7 @@ long long ThreadCpuUsage::elapsed() const
                     (ts.tv_nsec - mMonotonicTs.tv_nsec);
         }
     } else {
-        ALOGW("Can't compute elapsed time because measurements have never been enabled");
+        LOGW("Can't compute elapsed time because measurements have never been enabled");
         elapsed = 0;
     }
     return elapsed;

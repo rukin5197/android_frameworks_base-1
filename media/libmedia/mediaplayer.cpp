@@ -417,10 +417,10 @@ status_t MediaPlayer::seekTo_l(int msec)
     LOGV("seekTo %d", msec);
     if ((mPlayer != 0) && ( mCurrentState & ( MEDIA_PLAYER_STARTED | MEDIA_PLAYER_PREPARED | MEDIA_PLAYER_PAUSED |  MEDIA_PLAYER_PLAYBACK_COMPLETE) ) ) {
         if ( msec < 0 ) {
-            ALOGW("Attempt to seek to invalid position: %d", msec);
+            LOGW("Attempt to seek to invalid position: %d", msec);
             msec = 0;
         } else if ((mDuration > 0) && (msec > mDuration)) {
-            ALOGW("Attempt to seek to past end of file: request = %d, EOF = %d", msec, mDuration);
+            LOGW("Attempt to seek to past end of file: request = %d, EOF = %d", msec, mDuration);
             msec = mDuration;
         }
         // cache duration
@@ -666,7 +666,7 @@ void MediaPlayer::notify(int msg, int ext1, int ext2, const Parcel *obj)
         // ext1: Media framework error code.
         // ext2: Implementation dependant error code.
         if (ext1 != MEDIA_INFO_VIDEO_TRACK_LAGGING) {
-            ALOGW("info/warning (%d, %d)", ext1, ext2);
+            LOGW("info/warning (%d, %d)", ext1, ext2);
         }
         break;
     case MEDIA_SEEK_COMPLETE:

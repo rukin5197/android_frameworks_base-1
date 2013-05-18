@@ -1785,13 +1785,13 @@ bool InputDispatcher::checkInjectionPermission(const sp<InputWindowHandle>& wind
                     || windowHandle->getInfo()->ownerUid != injectionState->injectorUid)
             && !hasInjectionPermission(injectionState->injectorPid, injectionState->injectorUid)) {
         if (windowHandle != NULL) {
-            ALOGW("Permission denied: injecting event from pid %d uid %d to window %s "
+            LOGW("Permission denied: injecting event from pid %d uid %d to window %s "
                     "owned by uid %d",
                     injectionState->injectorPid, injectionState->injectorUid,
                     windowHandle->getName().string(),
                     windowHandle->getInfo()->ownerUid);
         } else {
-            ALOGW("Permission denied: injecting event from pid %d uid %d",
+            LOGW("Permission denied: injecting event from pid %d uid %d",
                     injectionState->injectorPid, injectionState->injectorUid);
         }
         return false;
@@ -2439,7 +2439,7 @@ int InputDispatcher::handleReceiveCallback(int receiveFd, int events, void* data
         sp<Connection> connection = d->mConnectionsByReceiveFd.valueAt(connectionIndex);
         if (!(events & (ALOOPER_EVENT_ERROR | ALOOPER_EVENT_HANGUP))) {
             if (!(events & ALOOPER_EVENT_INPUT)) {
-                ALOGW("channel '%s' ~ Received spurious callback for unhandled poll event.  "
+                LOGW("channel '%s' ~ Received spurious callback for unhandled poll event.  "
                         "events=0x%x", connection->getInputChannelName(), events);
                 return 1;
             }
@@ -2462,7 +2462,7 @@ int InputDispatcher::handleReceiveCallback(int receiveFd, int events, void* data
             // about them.
             notify = !connection->monitor;
             if (notify) {
-                ALOGW("channel '%s' ~ Consumer closed input channel or an error occurred.  "
+                LOGW("channel '%s' ~ Consumer closed input channel or an error occurred.  "
                         "events=0x%x", connection->getInputChannelName(), events);
             }
         }
@@ -2580,7 +2580,7 @@ InputDispatcher::splitMotionEvent(const MotionEntry* originalMotionEntry, BitSet
         // different pointer ids than we expected based on the previous ACTION_DOWN
         // or ACTION_POINTER_DOWN events that caused us to decide to split the pointers
         // in this way.
-        ALOGW("Dropping split motion event because the pointer count is %d but "
+        LOGW("Dropping split motion event because the pointer count is %d but "
                 "we expected there to be %d pointers.  This probably means we received "
                 "a broken sequence of pointer ids from the input device.",
                 splitPointerCount, pointerIds.count());
@@ -3119,7 +3119,7 @@ int32_t InputDispatcher::injectInputEvent(const InputEvent* event,
     }
 
     default:
-        ALOGW("Cannot inject event of type %d", event->getType());
+        LOGW("Cannot inject event of type %d", event->getType());
         return INPUT_EVENT_INJECTION_FAILED;
     }
 
@@ -3220,13 +3220,13 @@ void InputDispatcher::setInjectionResultLocked(EventEntry* entry, int32_t inject
                 LOGV("Asynchronous input event injection succeeded.");
                 break;
             case INPUT_EVENT_INJECTION_FAILED:
-                ALOGW("Asynchronous input event injection failed.");
+                LOGW("Asynchronous input event injection failed.");
                 break;
             case INPUT_EVENT_INJECTION_PERMISSION_DENIED:
-                ALOGW("Asynchronous input event injection permission denied.");
+                LOGW("Asynchronous input event injection permission denied.");
                 break;
             case INPUT_EVENT_INJECTION_TIMED_OUT:
-                ALOGW("Asynchronous input event injection timed out.");
+                LOGW("Asynchronous input event injection timed out.");
                 break;
             }
         }
@@ -3668,7 +3668,7 @@ status_t InputDispatcher::registerInputChannel(const sp<InputChannel>& inputChan
         AutoMutex _l(mLock);
 
         if (getConnectionIndexLocked(inputChannel) >= 0) {
-            ALOGW("Attempted to register already registered input channel '%s'",
+            LOGW("Attempted to register already registered input channel '%s'",
                     inputChannel->getName().string());
             return BAD_VALUE;
         }
@@ -3719,7 +3719,7 @@ status_t InputDispatcher::unregisterInputChannelLocked(const sp<InputChannel>& i
         bool notify) {
     ssize_t connectionIndex = getConnectionIndexLocked(inputChannel);
     if (connectionIndex < 0) {
-        ALOGW("Attempted to unregister already unregistered input channel '%s'",
+        LOGW("Attempted to unregister already unregistered input channel '%s'",
                 inputChannel->getName().string());
         return BAD_VALUE;
     }

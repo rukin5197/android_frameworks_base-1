@@ -1261,7 +1261,7 @@ audioCallback_EndLoop:
                 // must reload lpToneDesc as prepareWave() may change mpToneDesc
                 lpToneDesc = lpToneGen->mpToneDesc;
             } else {
-                ALOGW("Cbk restarting prepareWave() failed\n");
+                LOGW("Cbk restarting prepareWave() failed\n");
                 lpToneGen->mState = TONE_IDLE;
                 lpToneGen->mpAudioTrack->stop();
                 // Force loop exit

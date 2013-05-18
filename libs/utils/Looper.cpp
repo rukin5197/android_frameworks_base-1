@@ -163,7 +163,7 @@ sp<Looper> Looper::prepare(int opts) {
         Looper::setForThread(looper);
     }
     if (looper->getAllowNonCallbacks() != allowNonCallbacks) {
-        ALOGW("Looper already prepared for this thread with a different value for the "
+        LOGW("Looper already prepared for this thread with a different value for the "
                 "ALOOPER_PREPARE_ALLOW_NON_CALLBACKS option.");
     }
     return looper;
@@ -262,7 +262,7 @@ int Looper::pollInner(int timeoutMillis) {
         if (errno == EINTR) {
             goto Done;
         }
-        ALOGW("Poll failed with an unexpected error, errno=%d", errno);
+        LOGW("Poll failed with an unexpected error, errno=%d", errno);
         result = ALOOPER_POLL_ERROR;
         goto Done;
     }
@@ -289,7 +289,7 @@ int Looper::pollInner(int timeoutMillis) {
             if (epollEvents & EPOLLIN) {
                 awoken();
             } else {
-                ALOGW("Ignoring unexpected epoll events 0x%x on wake read pipe.", epollEvents);
+                LOGW("Ignoring unexpected epoll events 0x%x on wake read pipe.", epollEvents);
             }
         } else {
             ssize_t requestIndex = mRequests.indexOfKey(fd);
@@ -301,7 +301,7 @@ int Looper::pollInner(int timeoutMillis) {
                 if (epollEvents & EPOLLHUP) events |= ALOOPER_EVENT_HANGUP;
                 pushResponse(events, mRequests.valueAt(requestIndex));
             } else {
-                ALOGW("Ignoring unexpected epoll events 0x%x on fd %d that is "
+                LOGW("Ignoring unexpected epoll events 0x%x on fd %d that is "
                         "no longer registered.", epollEvents, fd);
             }
         }
@@ -317,7 +317,7 @@ Done: ;
                 if (pollEvents & POLLIN) {
                     awoken();
                 } else {
-                    ALOGW("Ignoring unexpected poll events 0x%x on wake read pipe.", pollEvents);
+                    LOGW("Ignoring unexpected poll events 0x%x on wake read pipe.", pollEvents);
                 }
             } else {
                 int events = 0;
@@ -468,7 +468,7 @@ void Looper::wake() {
 
     if (nWrite != 1) {
         if (errno != EAGAIN) {
-            ALOGW("Could not write wake signal, errno=%d", errno);
+            LOGW("Could not write wake signal, errno=%d", errno);
         }
     }
 }

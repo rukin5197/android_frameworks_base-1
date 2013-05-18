@@ -101,7 +101,7 @@ void android_view_InputChannel_setDisposeCallback(JNIEnv* env, jobject inputChan
     NativeInputChannel* nativeInputChannel =
             android_view_InputChannel_getNativeInputChannel(env, inputChannelObj);
     if (nativeInputChannel == NULL) {
-        ALOGW("Cannot set dispose callback because input channel object has not been initialized.");
+        LOGW("Cannot set dispose callback because input channel object has not been initialized.");
     } else {
         nativeInputChannel->setDisposeCallback(callback, data);
     }
@@ -161,7 +161,7 @@ static void android_view_InputChannel_nativeDispose(JNIEnv* env, jobject obj, jb
             android_view_InputChannel_getNativeInputChannel(env, obj);
     if (nativeInputChannel) {
         if (finalized) {
-            ALOGW("Input channel object '%s' was finalized without being disposed!",
+            LOGW("Input channel object '%s' was finalized without being disposed!",
                     nativeInputChannel->getInputChannel()->getName().string());
         }
 

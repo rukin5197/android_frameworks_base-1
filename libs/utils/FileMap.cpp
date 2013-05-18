@@ -217,7 +217,7 @@ int FileMap::advise(MapAdvice advice)
 
     cc = madvise(mBasePtr, mBaseLength, sysAdvice);
     if (cc != 0)
-        ALOGW("madvise(%d) failed: %s\n", sysAdvice, strerror(errno));
+        LOGW("madvise(%d) failed: %s\n", sysAdvice, strerror(errno));
     return cc;
 #else
 	return -1;
