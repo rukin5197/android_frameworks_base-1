@@ -299,7 +299,7 @@ static status_t getIdmapPackageId(const uint32_t* map, size_t mapSize, uint32_t 
 Res_png_9patch* Res_png_9patch::deserialize(const void* inData)
 {
     if (sizeof(void*) != sizeof(int32_t)) {
-        ALOGE("Cannot deserialize on non 32-bit system\n");
+        LOGE("Cannot deserialize on non 32-bit system\n");
         return NULL;
     }
     deserializeInternal(inData, (Res_png_9patch*) inData);
@@ -1584,7 +1584,7 @@ status_t ResTable::Theme::applyStyle(uint32_t resID, bool force)
         if (curPackage != p) {
             const ssize_t pidx = mTable.getResourcePackageIndex(attrRes);
             if (pidx < 0) {
-                ALOGE("Style contains key with bad package: 0x%08x\n", attrRes);
+                LOGE("Style contains key with bad package: 0x%08x\n", attrRes);
                 bag++;
                 continue;
             }
@@ -1604,7 +1604,7 @@ status_t ResTable::Theme::applyStyle(uint32_t resID, bool force)
         }
         if (curType != t) {
             if (t >= curPI->numTypes) {
-                ALOGE("Style contains key with bad type: 0x%08x\n", attrRes);
+                LOGE("Style contains key with bad type: 0x%08x\n", attrRes);
                 bag++;
                 continue;
             }
@@ -1622,7 +1622,7 @@ status_t ResTable::Theme::applyStyle(uint32_t resID, bool force)
             numEntries = curPI->types[t].numEntries;
         }
         if (e >= numEntries) {
-            ALOGE("Style contains key with bad entry: 0x%08x\n", attrRes);
+            LOGE("Style contains key with bad entry: 0x%08x\n", attrRes);
             bag++;
             continue;
         }
@@ -2111,7 +2111,7 @@ ssize_t ResTable::getResource(uint32_t resID, Res_value* outValue, bool mayBeBag
     if (density > 0) {
         overrideConfig = (ResTable_config*) malloc(sizeof(ResTable_config));
         if (overrideConfig == NULL) {
-            ALOGE("Couldn't malloc ResTable_config for overrides: %s", strerror(errno));
+            LOGE("Couldn't malloc ResTable_config for overrides: %s", strerror(errno));
             return BAD_INDEX;
         }
         memcpy(overrideConfig, &mParams, sizeof(ResTable_config));

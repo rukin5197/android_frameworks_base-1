@@ -341,8 +341,13 @@ static const CodecInfo kEncoderInfo[] = {
 
 #undef OPTIONAL
 
+<<<<<<< HEAD
 #define CODEC_LOGI(x, ...) LOGI("[%s] "x, mComponentName, ##__VA_ARGS__)
 #define CODEC_LOGV(x, ...) LOGV("[%s] "x, mComponentName, ##__VA_ARGS__)
+=======
+#define CODEC_LOGI(x, ...) ALOGI("[%s] "x, mComponentName, ##__VA_ARGS__)
+#define CODEC_LOGV(x, ...) ALOGV("[%s] "x, mComponentName, ##__VA_ARGS__)
+>>>>>>> parent of c6aacce... Rename (IF_)LOGE(_IF) to (IF_)ALOGE(_IF)
 #define CODEC_LOGE(x, ...) LOGE("[%s] "x, mComponentName, ##__VA_ARGS__)
 
 struct OMXCodecObserver : public BnOMXObserver {
@@ -882,7 +887,11 @@ status_t OMXCodec::configureCodec(const sp<MetaData> &meta) {
             unsigned profile, level;
             status_t err;
             if ((err = parseAVCCodecSpecificData(
+<<<<<<< HEAD
                             data, size, &profile, &level, meta)) != OK) {
+=======
+                            data, size, &profile, &level)) != OK) {
+>>>>>>> parent of c6aacce... Rename (IF_)LOGE(_IF) to (IF_)ALOGE(_IF)
                 LOGE("Malformed AVC codec specific data.");
                 return err;
             }
@@ -2334,7 +2343,11 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
         }
 
         if (err != OK) {
+<<<<<<< HEAD
             CODEC_LOGE("allocate_buffer_with_backup failed");
+=======
+            LOGE("allocate_buffer_with_backup failed");
+>>>>>>> parent of c6aacce... Rename (IF_)LOGE(_IF) to (IF_)ALOGE(_IF)
             return err;
         }
 
@@ -2587,6 +2600,7 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
             mNativeWindow.get(), def.nBufferCountActual);
     if (err != 0) {
         LOGE("native_window_set_buffer_count failed: %s (%d)", strerror(-err),
+<<<<<<< HEAD
                 -err);
         return err;
     }
@@ -2596,6 +2610,8 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
                              NATIVE_WINDOW_SET_BUFFERS_SIZE, def.nBufferSize);
     if (err != 0) {
         LOGE("native_window_set_buffers_size failed: %s (%d)", strerror(-err),
+=======
+>>>>>>> parent of c6aacce... Rename (IF_)LOGE(_IF) to (IF_)ALOGE(_IF)
                 -err);
         return err;
     }

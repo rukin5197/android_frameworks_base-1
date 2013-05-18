@@ -170,7 +170,7 @@ status_t SurfaceControl::setFreezeTint(uint32_t tint) {
 status_t SurfaceControl::validate() const
 {
     if (mToken<0 || mClient==0) {
-        ALOGE("invalid token (%d, identity=%u) or client (%p)", 
+        LOGE("invalid token (%d, identity=%u) or client (%p)", 
                 mToken, mIdentity, mClient.get());
         return NO_INIT;
     }
@@ -257,7 +257,7 @@ status_t Surface::writeToParcel(
     } else if (surface != 0 &&
             (surface->mSurface != NULL ||
              surface->getISurfaceTexture() != NULL)) {
-        ALOGE("Parceling invalid surface with non-NULL ISurface/ISurfaceTexture as NULL: "
+        LOGE("Parceling invalid surface with non-NULL ISurface/ISurfaceTexture as NULL: "
              "mSurface = %p, surfaceTexture = %p, mIdentity = %d, ",
              surface->mSurface.get(), surface->getISurfaceTexture().get(),
              surface->mIdentity);
@@ -307,7 +307,7 @@ void Surface::cleanCachedSurfacesLocked() {
 void Surface::init(const sp<ISurfaceTexture>& surfaceTexture)
 {
     if (mSurface != NULL || surfaceTexture != NULL) {
-        ALOGE_IF(surfaceTexture==0, "got a NULL ISurfaceTexture from ISurface");
+        LOGE_IF(surfaceTexture==0, "got a NULL ISurfaceTexture from ISurface");
         if (surfaceTexture != NULL) {
             setISurfaceTexture(surfaceTexture);
             setUsage(GraphicBuffer::USAGE_HW_RENDER);

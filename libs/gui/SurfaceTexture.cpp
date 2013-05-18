@@ -553,9 +553,9 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
         // synchronizing access to it.  It's too late at this point to abort the
         // dequeue operation.
         if (result == EGL_FALSE) {
-            ALOGE("dequeueBuffer: error waiting for fence: %#x", eglGetError());
+            LOGE("dequeueBuffer: error waiting for fence: %#x", eglGetError());
         } else if (result == EGL_TIMEOUT_EXPIRED_KHR) {
-            ALOGE("dequeueBuffer: timeout waiting for fence");
+            LOGE("dequeueBuffer: timeout waiting for fence");
         }
         eglDestroySyncKHR(dpy, fence);
     }
@@ -922,7 +922,7 @@ status_t SurfaceTexture::updateTexImage(bool isComposition) {
                 EGLSyncKHR fence = eglCreateSyncKHR(dpy, EGL_SYNC_FENCE_KHR,
                         NULL);
                 if (fence == EGL_NO_SYNC_KHR) {
-                    ALOGE("updateTexImage: error creating fence: %#x",
+                    LOGE("updateTexImage: error creating fence: %#x",
                             eglGetError());
                     return -EINVAL;
                 }

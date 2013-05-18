@@ -69,12 +69,12 @@ static inline int write_error_check(int fd, const char* line, int len) {
     errno = 0;
     ret = write(fd, line, len);
     if (ret < 0) {
-        ALOGE("%s: write() failed: %s (%d)", __FUNCTION__, strerror(errno),
+        LOGE("%s: write() failed: %s (%d)", __FUNCTION__, strerror(errno),
              errno);
         return -1;
     }
     if (ret != len) {
-        ALOGE("%s: write() only wrote %d of %d bytes", __FUNCTION__, ret, len);
+        LOGE("%s: write() only wrote %d of %d bytes", __FUNCTION__, ret, len);
         return -1;
     }
     return 0;
@@ -133,7 +133,7 @@ again:
     *err = errno = 0;
     int ret = poll(&pfd, 1, timeout_ms);
     if (ret < 0) {
-        ALOGE("poll() error\n");
+        LOGE("poll() error\n");
         *err = errno;
         return NULL;
     }
@@ -164,7 +164,7 @@ again:
                 goto again;
             }
             *err = errno;
-            ALOGE("read() error %s (%d)", strerror(errno), errno);
+            LOGE("read() error %s (%d)", strerror(errno), errno);
             return NULL;
         }
 
@@ -290,7 +290,7 @@ static void initializeNativeDataNative(JNIEnv* env, jobject object,
 #ifdef HAVE_BLUETOOTH
     native_data_t *nat = (native_data_t *)calloc(1, sizeof(native_data_t));
     if (NULL == nat) {
-        ALOGE("%s: out of memory!", __FUNCTION__);
+        LOGE("%s: out of memory!", __FUNCTION__);
         return;
     }
 
@@ -330,7 +330,7 @@ static jboolean connectNative(JNIEnv *env, jobject obj)
     nat->rfcomm_sock = socket(PF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 
     if (nat->rfcomm_sock < 0) {
-        ALOGE("%s: Could not create RFCOMM socket: %s\n", __FUNCTION__,
+        LOGE("%s: Could not create RFCOMM socket: %s\n", __FUNCTION__,
              strerror(errno));
         return JNI_FALSE;
     }
@@ -343,7 +343,7 @@ static jboolean connectNative(JNIEnv *env, jobject obj)
 
     if (lm && setsockopt(nat->rfcomm_sock, SOL_RFCOMM, RFCOMM_LM, &lm,
                 sizeof(lm)) < 0) {
-        ALOGE("%s: Can't set RFCOMM link mode", __FUNCTION__);
+        LOGE("%s: Can't set RFCOMM link mode", __FUNCTION__);
         close(nat->rfcomm_sock);
         return JNI_FALSE;
     }
@@ -357,7 +357,7 @@ static jboolean connectNative(JNIEnv *env, jobject obj)
         if (connect(nat->rfcomm_sock, (struct sockaddr *)&addr,
                       sizeof(addr)) < 0) {
             if (errno == EINTR) continue;
-            ALOGE("%s: connect() failed: %s\n", __FUNCTION__, strerror(errno));
+            LOGE("%s: connect() failed: %s\n", __FUNCTION__, strerror(errno));
             close(nat->rfcomm_sock);
             nat->rfcomm_sock = -1;
             return JNI_FALSE;
@@ -388,7 +388,7 @@ static jint connectAsyncNative(JNIEnv *env, jobject obj) {
 
         nat->rfcomm_sock = socket(PF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
         if (nat->rfcomm_sock < 0) {
-            ALOGE("%s: Could not create RFCOMM socket: %s\n", __FUNCTION__,
+            LOGE("%s: Could not create RFCOMM socket: %s\n", __FUNCTION__,
                  strerror(errno));
             return -1;
         }
@@ -401,7 +401,7 @@ static jint connectAsyncNative(JNIEnv *env, jobject obj) {
 
         if (lm && setsockopt(nat->rfcomm_sock, SOL_RFCOMM, RFCOMM_LM, &lm,
                     sizeof(lm)) < 0) {
-            ALOGE("%s: Can't set RFCOMM link mode", __FUNCTION__);
+            LOGE("%s: Can't set RFCOMM link mode", __FUNCTION__);
             close(nat->rfcomm_sock);
             return -1;
         }
@@ -438,7 +438,7 @@ static jint connectAsyncNative(JNIEnv *env, jobject obj) {
                 }
                 else
                 {
-                    ALOGE("async connect error: %s (%d)", strerror(errno), errno);
+                    LOGE("async connect error: %s (%d)", strerror(errno), errno);
                     close(nat->rfcomm_sock);
                     nat->rfcomm_sock = -1;
                     return -errno;
@@ -505,7 +505,7 @@ static jint waitForAsyncConnectNative(JNIEnv *env, jobject obj,
 
         if (n <= 0) {
             if (n < 0)  {
-                ALOGE("select() on RFCOMM socket: %s (%d)",
+                LOGE("select() on RFCOMM socket: %s (%d)",
                      strerror(errno),
                      errno);
                 return -errno;
@@ -528,7 +528,7 @@ static jint waitForAsyncConnectNative(JNIEnv *env, jobject obj,
                    respond... but one can't be paranoid enough.
                 */
                 if (nr >= 0 || errno != EAGAIN) {
-                    ALOGE("RFCOMM async connect() error: %s (%d), nr = %d\n",
+                    LOGE("RFCOMM async connect() error: %s (%d), nr = %d\n",
                          strerror(errno),
                          errno,
                          nr);
@@ -551,7 +551,7 @@ static jint waitForAsyncConnectNative(JNIEnv *env, jobject obj,
             return 1;
         }
     }
-    else ALOGE("RFCOMM socket file descriptor %d is bad!",
+    else LOGE("RFCOMM socket file descriptor %d is bad!",
               nat->rfcomm_sock);
 #endif
     return -1;

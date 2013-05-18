@@ -188,7 +188,7 @@ void OpenGLRenderer::finish() {
         LOGD("GL error from OpenGLRenderer: 0x%x", status);
         switch (status) {
             case GL_OUT_OF_MEMORY:
-                ALOGE("  OpenGLRenderer is out of memory!");
+                LOGE("  OpenGLRenderer is out of memory!");
                 break;
         }
     }
@@ -551,7 +551,7 @@ bool OpenGLRenderer::createFboLayer(Layer* layer, Rect& bounds, sp<Snapshot> sna
 #if DEBUG_LAYERS_AS_REGIONS
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE) {
-        ALOGE("Framebuffer incomplete (GL error code 0x%x)", status);
+        LOGE("Framebuffer incomplete (GL error code 0x%x)", status);
 
         glBindFramebuffer(GL_FRAMEBUFFER, previousFbo);
         layer->deleteTexture();
@@ -583,7 +583,7 @@ bool OpenGLRenderer::createFboLayer(Layer* layer, Rect& bounds, sp<Snapshot> sna
  */
 void OpenGLRenderer::composeLayer(sp<Snapshot> current, sp<Snapshot> previous) {
     if (!current->layer) {
-        ALOGE("Attempting to compose a layer that does not exist");
+        LOGE("Attempting to compose a layer that does not exist");
         return;
     }
 

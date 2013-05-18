@@ -104,13 +104,13 @@ void CameraService::onFirstRef()
 
     if (hw_get_module(CAMERA_HARDWARE_MODULE_ID,
                 (const hw_module_t **)&mModule) < 0) {
-        ALOGE("Could not load camera HAL module");
+        LOGE("Could not load camera HAL module");
         mNumberOfCameras = 0;
     }
     else {
         mNumberOfCameras = mModule->get_number_of_cameras();
         if (mNumberOfCameras > MAX_CAMERAS) {
-            ALOGE("Number of cameras(%d) > MAX_CAMERAS(%d).",
+            LOGE("Number of cameras(%d) > MAX_CAMERAS(%d).",
                     mNumberOfCameras, MAX_CAMERAS);
             mNumberOfCameras = MAX_CAMERAS;
         }
@@ -123,7 +123,7 @@ void CameraService::onFirstRef()
 CameraService::~CameraService() {
     for (int i = 0; i < mNumberOfCameras; i++) {
         if (mBusy[i]) {
-            ALOGE("camera %d is still in use in destructor!", i);
+            LOGE("camera %d is still in use in destructor!", i);
         }
     }
 
@@ -159,13 +159,13 @@ sp<ICamera> CameraService::connect(
     LOG1("CameraService::connect E (pid %d, id %d)", callingPid, cameraId);
 
     if (!mModule) {
-        ALOGE("Camera HAL module not loaded");
+        LOGE("Camera HAL module not loaded");
         return NULL;
     }
 
     sp<Client> client;
     if (cameraId < 0 || cameraId >= mNumberOfCameras) {
-        ALOGE("CameraService::connect X (pid %d) rejected (invalid cameraId %d).",
+        LOGE("CameraService::connect X (pid %d) rejected (invalid cameraId %d).",
             callingPid, cameraId);
         return NULL;
     }
@@ -207,7 +207,7 @@ sp<ICamera> CameraService::connect(
 
     struct camera_info info;
     if (mModule->get_camera_info(cameraId, &info) != OK) {
-        ALOGE("Invalid camera id %d", cameraId);
+        LOGE("Invalid camera id %d", cameraId);
         return NULL;
     }
 
@@ -278,7 +278,7 @@ status_t CameraService::onTransact(
                 if (!checkCallingPermission(
                         String16("android.permission.CAMERA"))) {
                     const int uid = getCallingUid();
-                    ALOGE("Permission Denial: "
+                    LOGE("Permission Denial: "
                          "can't use the camera pid=%d, uid=%d", pid, uid);
                     return PERMISSION_DENIED;
                 }
@@ -313,7 +313,7 @@ MediaPlayer* CameraService::newMediaPlayer(const char *file) {
         mp->setAudioStreamType(AUDIO_STREAM_ENFORCED_AUDIBLE);
         mp->prepare();
     } else {
-        ALOGE("Failed to load CameraService sounds: %s", file);
+        LOGE("Failed to load CameraService sounds: %s", file);
         return NULL;
     }
     return mp;
@@ -432,7 +432,7 @@ status_t CameraService::Client::checkPidAndHardware() const {
     status_t result = checkPid();
     if (result != NO_ERROR) return result;
     if (mHardware == 0) {
-        ALOGE("attempt to use a camera after disconnect() (pid %d)", getCallingPid());
+        LOGE("attempt to use a camera after disconnect() (pid %d)", getCallingPid());
         return INVALID_OPERATION;
     }
     return NO_ERROR;
@@ -462,7 +462,7 @@ status_t CameraService::Client::unlock() {
     status_t result = checkPid();
     if (result == NO_ERROR) {
         if (mHardware->recordingEnabled()) {
-            ALOGE("Not allowed to unlock camera during recording.");
+            LOGE("Not allowed to unlock camera during recording.");
             return INVALID_OPERATION;
         }
         mClientPid = 0;
@@ -573,7 +573,7 @@ status_t CameraService::Client::setPreviewWindow(const sp<IBinder>& binder,
     if (window != 0) {
         result = native_window_api_connect(window.get(), NATIVE_WINDOW_API_CAMERA);
         if (result != NO_ERROR) {
-            ALOGE("native_window_api_connect failed: %s (%d)", strerror(-result),
+            LOGE("native_window_api_connect failed: %s (%d)", strerror(-result),
                     result);
             return result;
         }
@@ -681,7 +681,7 @@ status_t CameraService::Client::startCameraMode(camera_mode mode) {
             return startPreviewMode();
         case CAMERA_RECORDING_MODE:
             if (mSurface == 0 && mPreviewWindow == 0) {
-                ALOGE("mSurface or mPreviewWindow must be set before startRecordingMode.");
+                LOGE("mSurface or mPreviewWindow must be set before startRecordingMode.");
                 return INVALID_OPERATION;
             }
             return startRecordingMode();
@@ -733,7 +733,7 @@ status_t CameraService::Client::startRecordingMode() {
     mCameraService->playSound(SOUND_RECORDING);
     result = mHardware->startRecording();
     if (result != NO_ERROR) {
-        ALOGE("mHardware->startRecording() failed with status %d", result);
+        LOGE("mHardware->startRecording() failed with status %d", result);
     }
     return result;
 }
@@ -828,7 +828,7 @@ status_t CameraService::Client::takePicture(int msgType) {
 
     if ((msgType & CAMERA_MSG_RAW_IMAGE) &&
         (msgType & CAMERA_MSG_RAW_IMAGE_NOTIFY)) {
-        ALOGE("CAMERA_MSG_RAW_IMAGE and CAMERA_MSG_RAW_IMAGE_NOTIFY"
+        LOGE("CAMERA_MSG_RAW_IMAGE and CAMERA_MSG_RAW_IMAGE_NOTIFY"
                 " cannot be both enabled");
         return BAD_VALUE;
     }
@@ -891,7 +891,7 @@ status_t CameraService::Client::enableShutterSound(bool enable) {
         // Disabling shutter sound is not allowed. Deny if the current
         // process is not mediaserver.
         if (getCallingPid() != getpid()) {
-            ALOGE("Failed to disable shutter sound. Permission denied (pid %d)", getCallingPid());
+            LOGE("Failed to disable shutter sound. Permission denied (pid %d)", getCallingPid());
             return PERMISSION_DENIED;
         }
     }
@@ -1001,12 +1001,12 @@ sp<CameraService::Client> CameraService::Client::getClientFromCookie(void* user)
 
     // The checks below are not necessary and are for debugging only.
     if (client->mCameraService.get() != gCameraService) {
-        ALOGE("mismatch service!");
+        LOGE("mismatch service!");
         return NULL;
     }
 
     if (client->mHardware == 0) {
-        ALOGE("mHardware == 0: callback after disconnect()?");
+        LOGE("mHardware == 0: callback after disconnect()?");
         return NULL;
     }
 
@@ -1097,7 +1097,7 @@ void CameraService::Client::dataCallbackTimestamp(nsecs_t timestamp,
     if (!client->lockIfMessageWanted(msgType)) return;
 
     if (dataPtr == 0) {
-        ALOGE("Null data returned in data with timestamp callback");
+        LOGE("Null data returned in data with timestamp callback");
         client->handleGenericNotify(CAMERA_MSG_ERROR, UNKNOWN_ERROR, 0);
         return;
     }
@@ -1261,7 +1261,7 @@ void CameraService::Client::copyFrameAndPostCopiedFrame(
         mPreviewBuffer = new MemoryHeapBase(size, 0, NULL);
     }
     if (mPreviewBuffer == 0) {
-        ALOGE("failed to allocate space for preview buffer");
+        LOGE("failed to allocate space for preview buffer");
         mLock.unlock();
         return;
     }
@@ -1271,7 +1271,7 @@ void CameraService::Client::copyFrameAndPostCopiedFrame(
 
     sp<MemoryBase> frame = new MemoryBase(previewBuffer, 0, size);
     if (frame == 0) {
-        ALOGE("failed to allocate space for frame callback");
+        LOGE("failed to allocate space for frame callback");
         mLock.unlock();
         return;
     }
@@ -1297,7 +1297,7 @@ int CameraService::Client::getOrientation(int degrees, bool mirror) {
             return HAL_TRANSFORM_FLIP_V | HAL_TRANSFORM_ROT_90;
         }
     }
-    ALOGE("Invalid setDisplayOrientation degrees=%d", degrees);
+    LOGE("Invalid setDisplayOrientation degrees=%d", degrees);
     return -1;
 }
 

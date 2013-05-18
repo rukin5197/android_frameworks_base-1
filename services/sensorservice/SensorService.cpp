@@ -241,7 +241,7 @@ bool SensorService::threadLoop()
     do {
         count = device.poll(buffer, numEventMax);
         if (count<0) {
-            ALOGE("sensor poll failed (%s)", strerror(-count));
+            LOGE("sensor poll failed (%s)", strerror(-count));
             break;
         }
 
@@ -382,7 +382,7 @@ void SensorService::cleanupConnection(SensorEventConnection* c)
         if (c->hasSensor(handle)) {
             LOGD_IF(DEBUG_CONNECTIONS, "%i: disabling handle=0x%08x", i, handle);
             SensorInterface* sensor = mSensorMap.valueFor( handle );
-            ALOGE_IF(!sensor, "mSensorMap[handle=0x%08x] is null!", handle);
+            LOGE_IF(!sensor, "mSensorMap[handle=0x%08x] is null!", handle);
             if (sensor) {
                 sensor->activate(c, false);
             }
@@ -611,7 +611,7 @@ status_t SensorService::SensorEventConnection::sendEvents(
         return size;
     }
 
-    //ALOGE_IF(size<0, "dropping %d events on the floor (%s)",
+    //LOGE_IF(size<0, "dropping %d events on the floor (%s)",
     //        count, strerror(-size));
 
     return size < 0 ? status_t(size) : status_t(NO_ERROR);
