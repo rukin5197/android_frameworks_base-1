@@ -331,7 +331,7 @@ void InputReader::processEventsLocked(const RawEvent* rawEvents, size_t count) {
                 handleConfigurationChangedLocked(rawEvent->when);
                 break;
             default:
-                ALOG_ASSERT(false); // can't happen
+                LOG_ASSERT(false); // can't happen
                 break;
             }
         }
@@ -2196,7 +2196,7 @@ void CursorInputMapper::dumpParameters(String8& dump) {
         dump.append(INDENT4 "Mode: navigation\n");
         break;
     default:
-        ALOG_ASSERT(false);
+        LOG_ASSERT(false);
     }
 
     dump.appendFormat(INDENT4 "OrientationAware: %s\n",
@@ -2663,7 +2663,7 @@ void TouchInputMapper::dumpParameters(String8& dump) {
         dump.append(INDENT4 "DeviceType: pointer\n");
         break;
     default:
-        ALOG_ASSERT(false);
+        LOG_ASSERT(false);
     }
 
     dump.appendFormat(INDENT4 "AssociatedDisplay: id=%d, isExternal=%s\n",
@@ -3247,7 +3247,7 @@ void TouchInputMapper::dumpCalibration(String8& dump) {
         dump.append(INDENT4 "touch.size.calibration: area\n");
         break;
     default:
-        ALOG_ASSERT(false);
+        LOG_ASSERT(false);
     }
 
     if (mCalibration.haveSizeScale) {
@@ -3277,7 +3277,7 @@ void TouchInputMapper::dumpCalibration(String8& dump) {
         dump.append(INDENT4 "touch.pressure.calibration: amplitude\n");
         break;
     default:
-        ALOG_ASSERT(false);
+        LOG_ASSERT(false);
     }
 
     if (mCalibration.havePressureScale) {
@@ -3297,7 +3297,7 @@ void TouchInputMapper::dumpCalibration(String8& dump) {
         dump.append(INDENT4 "touch.orientation.calibration: vector\n");
         break;
     default:
-        ALOG_ASSERT(false);
+        LOG_ASSERT(false);
     }
 
     // Distance
@@ -3309,7 +3309,7 @@ void TouchInputMapper::dumpCalibration(String8& dump) {
         dump.append(INDENT4 "touch.distance.calibration: scaled\n");
         break;
     default:
-        ALOG_ASSERT(false);
+        LOG_ASSERT(false);
     }
 
     if (mCalibration.haveDistanceScale) {
@@ -3726,7 +3726,7 @@ void TouchInputMapper::dispatchTouches(nsecs_t when, uint32_t policyFlags) {
         // Although applications receive new locations as part of individual pointer up
         // events, they do not generally handle them except when presented in a move event.
         if (moveNeeded) {
-            ALOG_ASSERT(moveIdBits.value == dispatchedIdBits.value);
+            LOG_ASSERT(moveIdBits.value == dispatchedIdBits.value);
             dispatchMotion(when, policyFlags, mSource,
                     AMOTION_EVENT_ACTION_MOVE, 0, metaState, buttonState, 0,
                     mCurrentCookedPointerData.pointerProperties,
@@ -3837,7 +3837,7 @@ void TouchInputMapper::cookPointerData() {
                 size = mRawPointerAxes.toolMinor.valid
                         ? avg(in.toolMajor, in.toolMinor) : in.toolMajor;
             } else {
-                ALOG_ASSERT(false, "No touch or tool axes.  "
+                LOG_ASSERT(false, "No touch or tool axes.  "
                         "Size calibration should have been resolved to NONE.");
                 touchMajor = 0;
                 touchMinor = 0;
@@ -4556,7 +4556,7 @@ bool TouchInputMapper::preparePointerGestures(nsecs_t when,
         // The pointer follows the active touch point.
         // When in HOVER, emit HOVER_MOVE events at the pointer location.
         // When in TAP_DRAG, emit MOVE events at the pointer location.
-        ALOG_ASSERT(activeTouchId >= 0);
+        LOG_ASSERT(activeTouchId >= 0);
 
         mPointerGesture.currentGestureMode = PointerGesture::HOVER;
         if (mPointerGesture.lastGestureMode == PointerGesture::TAP) {
@@ -4656,7 +4656,7 @@ bool TouchInputMapper::preparePointerGestures(nsecs_t when,
         //
         // When the two fingers move enough or when additional fingers are added, we make
         // a decision to transition into SWIPE or FREEFORM mode accordingly.
-        ALOG_ASSERT(activeTouchId >= 0);
+        LOG_ASSERT(activeTouchId >= 0);
 
         bool settled = when >= mPointerGesture.firstTouchTime
                 + mConfig.pointerGestureMultitouchSettleInterval;
@@ -4865,7 +4865,7 @@ bool TouchInputMapper::preparePointerGestures(nsecs_t when,
                     "activeGestureId=%d, currentTouchPointerCount=%d",
                     activeTouchId, mPointerGesture.activeGestureId, currentFingerCount);
 #endif
-            ALOG_ASSERT(mPointerGesture.activeGestureId >= 0);
+            LOG_ASSERT(mPointerGesture.activeGestureId >= 0);
 
             mPointerGesture.currentGestureIdBits.clear();
             mPointerGesture.currentGestureIdBits.markBit(mPointerGesture.activeGestureId);
@@ -4887,7 +4887,7 @@ bool TouchInputMapper::preparePointerGestures(nsecs_t when,
                     "activeGestureId=%d, currentTouchPointerCount=%d",
                     activeTouchId, mPointerGesture.activeGestureId, currentFingerCount);
 #endif
-            ALOG_ASSERT(mPointerGesture.activeGestureId >= 0);
+            LOG_ASSERT(mPointerGesture.activeGestureId >= 0);
 
             mPointerGesture.currentGestureIdBits.clear();
 
@@ -5264,7 +5264,7 @@ void TouchInputMapper::dispatchMotion(nsecs_t when, uint32_t policyFlags, uint32
         pointerCount += 1;
     }
 
-    ALOG_ASSERT(pointerCount != 0);
+    LOG_ASSERT(pointerCount != 0);
 
     if (changedId >= 0 && pointerCount == 1) {
         // Replace initial down and final up action.
@@ -5276,7 +5276,7 @@ void TouchInputMapper::dispatchMotion(nsecs_t when, uint32_t policyFlags, uint32
             action = AMOTION_EVENT_ACTION_UP;
         } else {
             // Can't happen.
-            ALOG_ASSERT(false);
+            LOG_ASSERT(false);
         }
     }
 

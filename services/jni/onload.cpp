@@ -46,7 +46,7 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
         LOGE("GetEnv failed!");
         return result;
     }
-    ALOG_ASSERT(env, "Could not retrieve the env!");
+    LOG_ASSERT(env, "Could not retrieve the env!");
 
     register_android_server_PowerManagerService(env);
     register_android_server_InputApplicationHandle(env);

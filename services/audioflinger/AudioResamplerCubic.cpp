@@ -36,7 +36,7 @@ void AudioResamplerCubic::resample(int32_t* out, size_t outFrameCount,
         AudioBufferProvider* provider) {
 
     // should never happen, but we overflow if it does
-    // ALOG_ASSERT(outFrameCount < 32767);
+    // LOG_ASSERT(outFrameCount < 32767);
 
     // select the appropriate resampler
     switch (mChannelCount) {
