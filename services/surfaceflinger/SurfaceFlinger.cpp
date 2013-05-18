@@ -120,7 +120,7 @@ SurfaceFlinger::SurfaceFlinger()
 
 void SurfaceFlinger::init()
 {
-    ALOGI("SurfaceFlinger is starting");
+    LOGI("SurfaceFlinger is starting");
 
     // debugging stuff...
     char value[PROPERTY_VALUE_MAX];
@@ -191,7 +191,7 @@ void SurfaceFlinger::bootFinished()
 {
     const nsecs_t now = systemTime();
     const nsecs_t duration = now - mBootTime;
-    ALOGI("Boot is finished (%ld ms)", long(ns2ms(duration)) );
+    LOGI("Boot is finished (%ld ms)", long(ns2ms(duration)) );
     mBootFinished = true;
 
     // wait patiently for the window manager death
@@ -230,7 +230,7 @@ static inline uint16_t pack565(int r, int g, int b) {
 
 status_t SurfaceFlinger::readyToRun()
 {
-    ALOGI(   "SurfaceFlinger's main thread ready to run. "
+    LOGI(   "SurfaceFlinger's main thread ready to run. "
             "Initializing graphics H/W...");
 
     // we only support one display currently

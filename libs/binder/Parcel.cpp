@@ -1102,7 +1102,7 @@ int Parcel::readFileDescriptor() const
     if (flat) {
         switch (flat->type) {
             case BINDER_TYPE_FD:
-                //ALOGI("Returning file descriptor %ld from parcel %p\n", flat->handle, this);
+                //LOGI("Returning file descriptor %ld from parcel %p\n", flat->handle, this);
                 return flat->handle;
         }        
     }
@@ -1232,14 +1232,14 @@ void Parcel::closeFileDescriptors()
 {
     size_t i = mObjectsSize;
     if (i > 0) {
-        //ALOGI("Closing file descriptors for %d objects...", mObjectsSize);
+        //LOGI("Closing file descriptors for %d objects...", mObjectsSize);
     }
     while (i > 0) {
         i--;
         const flat_binder_object* flat
             = reinterpret_cast<flat_binder_object*>(mData+mObjects[i]);
         if (flat->type == BINDER_TYPE_FD) {
-            //ALOGI("Closing fd: %ld\n", flat->handle);
+            //LOGI("Closing fd: %ld\n", flat->handle);
             close(flat->handle);
         }
     }
@@ -1272,7 +1272,7 @@ void Parcel::ipcSetDataReference(const uint8_t* data, size_t dataSize,
     mError = NO_ERROR;
     mData = const_cast<uint8_t*>(data);
     mDataSize = mDataCapacity = dataSize;
-    //ALOGI("setDataReference Setting data size of %p to %lu (pid=%d)\n", this, mDataSize, getpid());
+    //LOGI("setDataReference Setting data size of %p to %lu (pid=%d)\n", this, mDataSize, getpid());
     mDataPos = 0;
     LOGV("setDataReference Setting data pos of %p to %d\n", this, mDataPos);
     mObjects = const_cast<size_t*>(objects);
@@ -1346,7 +1346,7 @@ void Parcel::freeData()
 void Parcel::freeDataNoInit()
 {
     if (mOwner) {
-        //ALOGI("Freeing data ref of %p (pid=%d)\n", this, getpid());
+        //LOGI("Freeing data ref of %p (pid=%d)\n", this, getpid());
         mOwner(this, mData, mDataSize, mObjects, mObjectsSize, mOwnerCookie);
     } else {
         releaseObjects();
@@ -1452,7 +1452,7 @@ status_t Parcel::continueWrite(size_t desired)
         if (objects && mObjects) {
             memcpy(objects, mObjects, objectsSize*sizeof(size_t));
         }
-        //ALOGI("Freeing data ref of %p (pid=%d)\n", this, getpid());
+        //LOGI("Freeing data ref of %p (pid=%d)\n", this, getpid());
         mOwner(this, mData, mDataSize, mObjects, mObjectsSize, mOwnerCookie);
         mOwner = NULL;
 

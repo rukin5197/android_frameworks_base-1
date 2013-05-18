@@ -342,10 +342,14 @@ static const CodecInfo kEncoderInfo[] = {
 #undef OPTIONAL
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define CODEC_LOGI(x, ...) LOGI("[%s] "x, mComponentName, ##__VA_ARGS__)
 #define CODEC_LOGV(x, ...) LOGV("[%s] "x, mComponentName, ##__VA_ARGS__)
 =======
 #define CODEC_LOGI(x, ...) ALOGI("[%s] "x, mComponentName, ##__VA_ARGS__)
+=======
+#define CODEC_LOGI(x, ...) LOGI("[%s] "x, mComponentName, ##__VA_ARGS__)
+>>>>>>> parent of 933e856... Rename (IF_)LOGI(_IF) to (IF_)ALOGI(_IF)
 #define CODEC_LOGV(x, ...) ALOGV("[%s] "x, mComponentName, ##__VA_ARGS__)
 >>>>>>> parent of c6aacce... Rename (IF_)LOGE(_IF) to (IF_)ALOGE(_IF)
 #define CODEC_LOGE(x, ...) LOGE("[%s] "x, mComponentName, ##__VA_ARGS__)
@@ -887,11 +891,7 @@ status_t OMXCodec::configureCodec(const sp<MetaData> &meta) {
             unsigned profile, level;
             status_t err;
             if ((err = parseAVCCodecSpecificData(
-<<<<<<< HEAD
                             data, size, &profile, &level, meta)) != OK) {
-=======
-                            data, size, &profile, &level)) != OK) {
->>>>>>> parent of c6aacce... Rename (IF_)LOGE(_IF) to (IF_)ALOGE(_IF)
                 LOGE("Malformed AVC codec specific data.");
                 return err;
             }
