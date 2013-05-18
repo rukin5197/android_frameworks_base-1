@@ -85,7 +85,7 @@ void GraphicBufferAllocator::dumpToSystemLog()
 {
     String8 s;
     GraphicBufferAllocator::getInstance().dump(s);
-    ALOGD("%s", s.string());
+    LOGD("%s", s.string());
 }
 
 status_t GraphicBufferAllocator::alloc(uint32_t w, uint32_t h, PixelFormat format,

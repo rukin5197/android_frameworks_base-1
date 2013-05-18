@@ -258,7 +258,7 @@ BpMemoryHeap::~BpMemoryHeap() {
                 sp<IBinder> binder = const_cast<BpMemoryHeap*>(this)->asBinder();
 
                 if (VERBOSE) {
-                    ALOGD("UNMAPPING binder=%p, heap=%p, size=%d, fd=%d",
+                    LOGD("UNMAPPING binder=%p, heap=%p, size=%d, fd=%d",
                             binder.get(), this, mSize, mHeapId);
                     CallStack stack;
                     stack.update();
@@ -423,7 +423,7 @@ HeapCache::~HeapCache()
 
 void HeapCache::binderDied(const wp<IBinder>& binder)
 {
-    //ALOGD("binderDied binder=%p", binder.unsafe_get());
+    //LOGD("binderDied binder=%p", binder.unsafe_get());
     free_heap(binder);
 }
 
@@ -433,7 +433,7 @@ sp<IMemoryHeap> HeapCache::find_heap(const sp<IBinder>& binder)
     ssize_t i = mHeapCache.indexOfKey(binder);
     if (i>=0) {
         heap_info_t& info = mHeapCache.editValueAt(i);
-        ALOGD_IF(VERBOSE,
+        LOGD_IF(VERBOSE,
                 "found binder=%p, heap=%p, size=%d, fd=%d, count=%d",
                 binder.get(), info.heap.get(),
                 static_cast<BpMemoryHeap*>(info.heap.get())->mSize,
@@ -445,7 +445,7 @@ sp<IMemoryHeap> HeapCache::find_heap(const sp<IBinder>& binder)
         heap_info_t info;
         info.heap = interface_cast<IMemoryHeap>(binder);
         info.count = 1;
-        //ALOGD("adding binder=%p, heap=%p, count=%d",
+        //LOGD("adding binder=%p, heap=%p, count=%d",
         //      binder.get(), info.heap.get(), info.count);
         mHeapCache.add(binder, info);
         return info.heap;
@@ -466,7 +466,7 @@ void HeapCache::free_heap(const wp<IBinder>& binder)
             heap_info_t& info(mHeapCache.editValueAt(i));
             int32_t c = android_atomic_dec(&info.count);
             if (c == 1) {
-                ALOGD_IF(VERBOSE,
+                LOGD_IF(VERBOSE,
                         "removing binder=%p, heap=%p, size=%d, fd=%d, count=%d",
                         binder.unsafe_get(), info.heap.get(),
                         static_cast<BpMemoryHeap*>(info.heap.get())->mSize,
@@ -498,7 +498,7 @@ void HeapCache::dump_heaps()
     for (int i=0 ; i<c ; i++) {
         const heap_info_t& info = mHeapCache.valueAt(i);
         BpMemoryHeap const* h(static_cast<BpMemoryHeap const *>(info.heap.get()));
-        ALOGD("hey=%p, heap=%p, count=%d, (fd=%d, base=%p, size=%d)",
+        LOGD("hey=%p, heap=%p, count=%d, (fd=%d, base=%p, size=%d)",
                 mHeapCache.keyAt(i).unsafe_get(),
                 info.heap.get(), info.count,
                 h->mHeapId, h->mBase, h->mSize);

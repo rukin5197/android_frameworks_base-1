@@ -185,7 +185,7 @@ void OpenGLRenderer::finish() {
 #if DEBUG_OPENGL
     GLenum status = GL_NO_ERROR;
     while ((status = glGetError()) != GL_NO_ERROR) {
-        ALOGD("GL error from OpenGLRenderer: 0x%x", status);
+        LOGD("GL error from OpenGLRenderer: 0x%x", status);
         switch (status) {
             case GL_OUT_OF_MEMORY:
                 ALOGE("  OpenGLRenderer is out of memory!");

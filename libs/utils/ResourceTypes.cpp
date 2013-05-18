@@ -4410,7 +4410,7 @@ status_t ResTable::createIdmap(const ResTable& overlay, uint32_t originalCrc, ui
             }
 #if 0
             if (overlayResID != 0) {
-                ALOGD("%s/%s 0x%08x -> 0x%08x\n",
+                LOGD("%s/%s 0x%08x -> 0x%08x\n",
                      String8(String16(resName.type)).string(),
                      String8(String16(resName.name)).string(),
                      resID, overlayResID);

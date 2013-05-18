@@ -442,7 +442,7 @@ public:
 #endif
         canvas->drawPicture(*picture);
 #ifdef TIME_DRAW
-        ALOGD("---- picture playback %d ms\n", get_thread_msec() - now);
+        LOGD("---- picture playback %d ms\n", get_thread_msec() - now);
 #endif
     }
 

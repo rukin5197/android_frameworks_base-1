@@ -530,9 +530,9 @@ static void android_os_Debug_dumpNativeHeap(JNIEnv* env, jobject clazz,
         return;
     }
 
-    ALOGD("Native heap dump starting...\n");
+    LOGD("Native heap dump starting...\n");
     dumpNativeHeap(fp);
-    ALOGD("Native heap dump complete.\n");
+    LOGD("Native heap dump complete.\n");
 
     fclose(fp);
 }

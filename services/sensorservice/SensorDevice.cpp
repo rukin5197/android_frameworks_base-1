@@ -182,13 +182,13 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
     Info& info( mActivationCount.editValueFor(handle) );
 
 
-    ALOGD_IF(DEBUG_CONNECTIONS,
+    LOGD_IF(DEBUG_CONNECTIONS,
             "SensorDevice::activate: ident=%p, handle=0x%08x, enabled=%d, count=%d",
             ident, handle, enabled, info.rates.size());
 
     if (enabled) {
         Mutex::Autolock _l(mLock);
-        ALOGD_IF(DEBUG_CONNECTIONS, "... index=%ld",
+        LOGD_IF(DEBUG_CONNECTIONS, "... index=%ld",
                 info.rates.indexOfKey(ident));
 
         if (info.rates.indexOfKey(ident) < 0) {
@@ -201,7 +201,7 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
         }
     } else {
         Mutex::Autolock _l(mLock);
-        ALOGD_IF(DEBUG_CONNECTIONS, "... index=%ld",
+        LOGD_IF(DEBUG_CONNECTIONS, "... index=%ld",
                 info.rates.indexOfKey(ident));
 
         ssize_t idx = info.rates.removeItem(ident);
@@ -215,7 +215,7 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
     }
 
     if (actuateHardware) {
-        ALOGD_IF(DEBUG_CONNECTIONS, "\t>>> actuating h/w");
+        LOGD_IF(DEBUG_CONNECTIONS, "\t>>> actuating h/w");
 
         err = mSensorDevice->activate(mSensorDevice, handle, enabled);
         if (enabled) {

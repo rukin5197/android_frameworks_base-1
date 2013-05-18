@@ -159,7 +159,7 @@ AudioStream::~AudioStream()
     close(mSocket);
     delete mCodec;
     delete [] mBuffer;
-    ALOGD("stream[%d] is dead", mSocket);
+    LOGD("stream[%d] is dead", mSocket);
 }
 
 bool AudioStream::set(int mode, int socket, sockaddr_storage *remote,
@@ -218,7 +218,7 @@ bool AudioStream::set(int mode, int socket, sockaddr_storage *remote,
         }
     }
 
-    ALOGD("stream[%d] is configured as %s %dkHz %dms mode %d", mSocket,
+    LOGD("stream[%d] is configured as %s %dkHz %dms mode %d", mSocket,
         (codec ? codec->name : "RAW"), mSampleRate, mInterval, mMode);
     return true;
 }
@@ -570,7 +570,7 @@ AudioGroup::~AudioGroup()
         delete mChain;
         mChain = next;
     }
-    ALOGD("group[%d] is dead", mDeviceSocket);
+    LOGD("group[%d] is dead", mDeviceSocket);
 }
 
 bool AudioGroup::set(int sampleRate, int sampleCount)
@@ -620,7 +620,7 @@ bool AudioGroup::set(int sampleRate, int sampleCount)
     }
 
     // Anything else?
-    ALOGD("stream[%d] joins group[%d]", pair[1], pair[0]);
+    LOGD("stream[%d] joins group[%d]", pair[1], pair[0]);
     return true;
 }
 
@@ -643,7 +643,7 @@ bool AudioGroup::setMode(int mode)
     }
 
     mDeviceThread->requestExitAndWait();
-    ALOGD("group[%d] switches from mode %d to %d", mDeviceSocket, mMode, mode);
+    LOGD("group[%d] switches from mode %d to %d", mDeviceSocket, mMode, mode);
     mMode = mode;
     return (mode == ON_HOLD) || mDeviceThread->start();
 }
@@ -691,7 +691,7 @@ bool AudioGroup::add(AudioStream *stream)
         return false;
     }
 
-    ALOGD("stream[%d] joins group[%d]", stream->mSocket, mDeviceSocket);
+    LOGD("stream[%d] joins group[%d]", stream->mSocket, mDeviceSocket);
     return true;
 }
 
@@ -707,7 +707,7 @@ bool AudioGroup::remove(int socket)
                 return false;
             }
             stream->mNext = target->mNext;
-            ALOGD("stream[%d] leaves group[%d]", socket, mDeviceSocket);
+            LOGD("stream[%d] leaves group[%d]", socket, mDeviceSocket);
             delete target;
             break;
         }
@@ -799,7 +799,7 @@ bool AudioGroup::DeviceThread::threadLoop()
         ALOGE("cannot compute frame count");
         return false;
     }
-    ALOGD("reported frame count: output %d, input %d", output, input);
+    LOGD("reported frame count: output %d, input %d", output, input);
 
     if (output < sampleCount * 2) {
         output = sampleCount * 2;
@@ -807,7 +807,7 @@ bool AudioGroup::DeviceThread::threadLoop()
     if (input < sampleCount * 2) {
         input = sampleCount * 2;
     }
-    ALOGD("adjusted frame count: output %d, input %d", output, input);
+    LOGD("adjusted frame count: output %d, input %d", output, input);
 
     // Initialize AudioTrack and AudioRecord.
     AudioTrack track;
@@ -819,7 +819,7 @@ bool AudioGroup::DeviceThread::threadLoop()
         ALOGE("cannot initialize audio device");
         return false;
     }
-    ALOGD("latency: output %d, input %d", track.latency(), record.latency());
+    LOGD("latency: output %d, input %d", track.latency(), record.latency());
 
     // Give device socket a reasonable buffer size.
     setsockopt(deviceSocket, SOL_SOCKET, SO_RCVBUF, &output, sizeof(output));

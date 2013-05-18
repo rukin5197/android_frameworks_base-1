@@ -138,7 +138,7 @@ status_t NativeInputQueue::registerInputChannel(JNIEnv* env, jobject inputChanne
     }
 
 #if DEBUG_REGISTRATION
-    ALOGD("channel '%s' - Registered", inputChannel->getName().string());
+    LOGD("channel '%s' - Registered", inputChannel->getName().string());
 #endif
 
     sp<Looper> looper = android_os_MessageQueue_getLooper(env, messageQueueObj);
@@ -183,7 +183,7 @@ status_t NativeInputQueue::unregisterInputChannel(JNIEnv* env, jobject inputChan
     }
 
 #if DEBUG_REGISTRATION
-    ALOGD("channel '%s' - Unregistered", inputChannel->getName().string());
+    LOGD("channel '%s' - Unregistered", inputChannel->getName().string());
 #endif
 
     { // acquire lock
@@ -277,7 +277,7 @@ status_t NativeInputQueue::finished(JNIEnv* env, jlong finishedToken,
         }
 
 #if DEBUG_DISPATCH_CYCLE
-        ALOGD("channel '%s' ~ Finished event.",
+        LOGD("channel '%s' ~ Finished event.",
                 connection->getInputChannelName());
 #endif
     } // release lock
@@ -369,7 +369,7 @@ int NativeInputQueue::handleReceiveCallback(int receiveFd, int events, void* dat
     switch (inputEventType) {
     case AINPUT_EVENT_TYPE_KEY:
 #if DEBUG_DISPATCH_CYCLE
-        ALOGD("channel '%s' ~ Received key event.", connection->getInputChannelName());
+        LOGD("channel '%s' ~ Received key event.", connection->getInputChannelName());
 #endif
         inputEventObj = android_view_KeyEvent_fromNative(env,
                 static_cast<KeyEvent*>(inputEvent));
@@ -378,7 +378,7 @@ int NativeInputQueue::handleReceiveCallback(int receiveFd, int events, void* dat
 
     case AINPUT_EVENT_TYPE_MOTION:
 #if DEBUG_DISPATCH_CYCLE
-        ALOGD("channel '%s' ~ Received motion event.", connection->getInputChannelName());
+        LOGD("channel '%s' ~ Received motion event.", connection->getInputChannelName());
 #endif
         inputEventObj = android_view_MotionEvent_obtainAsCopy(env,
                 static_cast<MotionEvent*>(inputEvent));
@@ -399,13 +399,13 @@ int NativeInputQueue::handleReceiveCallback(int receiveFd, int events, void* dat
     }
 
 #if DEBUG_DISPATCH_CYCLE
-    ALOGD("Invoking input handler.");
+    LOGD("Invoking input handler.");
 #endif
     env->CallStaticVoidMethod(gInputQueueClassInfo.clazz,
             dispatchMethodId, inputHandlerObjLocal, inputEventObj,
             jlong(finishedToken));
 #if DEBUG_DISPATCH_CYCLE
-    ALOGD("Returned from input handler.");
+    LOGD("Returned from input handler.");
 #endif
 
     if (env->ExceptionCheck()) {

@@ -171,7 +171,7 @@ static int set_addresses(const char *name, const char *addresses)
                 break;
             }
         }
-        ALOGD("Address added on %s: %s/%d", name, address, prefix);
+        LOGD("Address added on %s: %s/%d", name, address, prefix);
         ++count;
     }
 
@@ -260,7 +260,7 @@ static int set_routes(const char *name, const char *routes)
                 }
             }
         }
-        ALOGD("Route added on %s: %s/%d", name, address, prefix);
+        LOGD("Route added on %s: %s/%d", name, address, prefix);
         ++count;
     }
 

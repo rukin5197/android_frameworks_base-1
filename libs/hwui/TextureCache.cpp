@@ -109,7 +109,7 @@ void TextureCache::operator()(SkBitmap*& bitmap, Texture*& texture) {
         TEXTURE_LOGD("TextureCache::callback: name, removed size, mSize = %d, %d, %d",
                 texture->id, texture->bitmapSize, mSize);
         if (mDebugEnabled) {
-            ALOGD("Texture deleted, size = %d", texture->bitmapSize);
+            LOGD("Texture deleted, size = %d", texture->bitmapSize);
         }
         glDeleteTextures(1, &texture->id);
         delete texture;
@@ -146,7 +146,7 @@ Texture* TextureCache::get(SkBitmap* bitmap) {
             TEXTURE_LOGD("TextureCache::get: create texture(%p): name, size, mSize = %d, %d, %d",
                      bitmap, texture->id, size, mSize);
             if (mDebugEnabled) {
-                ALOGD("Texture created, size = %d", size);
+                LOGD("Texture created, size = %d", size);
             }
             mCache.put(bitmap, texture);
         } else {

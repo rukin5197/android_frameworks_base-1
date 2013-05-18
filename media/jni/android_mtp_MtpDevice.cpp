@@ -132,12 +132,12 @@ android_mtp_MtpDevice_get_device_info(JNIEnv *env, jobject thiz)
 {
     MtpDevice* device = get_device_from_object(env, thiz);
     if (!device) {
-        ALOGD("android_mtp_MtpDevice_get_device_info device is null");
+        LOGD("android_mtp_MtpDevice_get_device_info device is null");
         return NULL;
     }
     MtpDeviceInfo* deviceInfo = device->getDeviceInfo();
     if (!deviceInfo) {
-        ALOGD("android_mtp_MtpDevice_get_device_info deviceInfo is null");
+        LOGD("android_mtp_MtpDevice_get_device_info deviceInfo is null");
         return NULL;
     }
     jobject info = env->NewObject(clazz_deviceInfo, constructor_deviceInfo);
@@ -429,7 +429,7 @@ int register_android_mtp_MtpDevice(JNIEnv *env)
 {
     jclass clazz;
 
-    ALOGD("register_android_mtp_MtpDevice\n");
+    LOGD("register_android_mtp_MtpDevice\n");
 
     clazz = env->FindClass("android/mtp/MtpDeviceInfo");
     if (clazz == NULL) {

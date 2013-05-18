@@ -50,7 +50,7 @@
 
 #define DEBUG_DEATH 0
 #if DEBUG_DEATH
-#define LOGDEATH ALOGD
+#define LOGDEATH LOGD
 #else
 #define LOGDEATH LOGV
 #endif

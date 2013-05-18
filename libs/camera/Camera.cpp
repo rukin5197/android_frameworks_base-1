@@ -178,7 +178,7 @@ status_t Camera::setPreviewDisplay(const sp<Surface>& surface)
     if (surface != 0) {
         return c->setPreviewDisplay(surface);
     } else {
-        ALOGD("app passed NULL surface");
+        LOGD("app passed NULL surface");
         return c->setPreviewDisplay(0);
     }
 }
@@ -192,7 +192,7 @@ status_t Camera::setPreviewTexture(const sp<ISurfaceTexture>& surfaceTexture)
     if (surfaceTexture != 0) {
         return c->setPreviewTexture(surfaceTexture);
     } else {
-        ALOGD("app passed NULL surface");
+        LOGD("app passed NULL surface");
         return c->setPreviewTexture(0);
     }
 }

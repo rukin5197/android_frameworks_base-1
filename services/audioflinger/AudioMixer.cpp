@@ -627,7 +627,7 @@ void AudioMixer::volumeRampStereo(track_t* t, int32_t* out, size_t frameCount, i
     const int32_t vlInc = t->volumeInc[0];
     const int32_t vrInc = t->volumeInc[1];
 
-    //ALOGD("[0] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
+    //LOGD("[0] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
     //        t, vlInc/65536.0f, vl/65536.0f, t->volume[0],
     //       (vl + vlInc*frameCount)/65536.0f, frameCount);
 
@@ -705,7 +705,7 @@ void AudioMixer::track__16BitsStereo(track_t* t, int32_t* out, size_t frameCount
             const int32_t vlInc = t->volumeInc[0];
             const int32_t vrInc = t->volumeInc[1];
             const int32_t vaInc = t->auxInc;
-            // ALOGD("[1] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
+            // LOGD("[1] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
             //        t, vlInc/65536.0f, vl/65536.0f, t->volume[0],
             //        (vl + vlInc*frameCount)/65536.0f, frameCount);
 
@@ -749,7 +749,7 @@ void AudioMixer::track__16BitsStereo(track_t* t, int32_t* out, size_t frameCount
             const int32_t vlInc = t->volumeInc[0];
             const int32_t vrInc = t->volumeInc[1];
 
-            // ALOGD("[1] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
+            // LOGD("[1] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
             //        t, vlInc/65536.0f, vl/65536.0f, t->volume[0],
             //        (vl + vlInc*frameCount)/65536.0f, frameCount);
 
@@ -794,7 +794,7 @@ void AudioMixer::track__16BitsMono(track_t* t, int32_t* out, size_t frameCount, 
             const int32_t vrInc = t->volumeInc[1];
             const int32_t vaInc = t->auxInc;
 
-            // ALOGD("[2] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
+            // LOGD("[2] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
             //         t, vlInc/65536.0f, vl/65536.0f, t->volume[0],
             //         (vl + vlInc*frameCount)/65536.0f, frameCount);
 
@@ -835,7 +835,7 @@ void AudioMixer::track__16BitsMono(track_t* t, int32_t* out, size_t frameCount, 
             const int32_t vlInc = t->volumeInc[0];
             const int32_t vrInc = t->volumeInc[1];
 
-            // ALOGD("[2] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
+            // LOGD("[2] %p: inc=%f, v0=%f, v1=%d, final=%f, count=%d",
             //         t, vlInc/65536.0f, vl/65536.0f, t->volume[0],
             //         (vl + vlInc*frameCount)/65536.0f, frameCount);
 

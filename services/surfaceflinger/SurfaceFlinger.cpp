@@ -1447,7 +1447,7 @@ sp<ISurface> SurfaceFlinger::createSurface(
         return surfaceHandle;
     }
 
-    //ALOGD("createSurface for pid %d (%d x %d)", pid, w, h);
+    //LOGD("createSurface for pid %d (%d x %d)", pid, w, h);
     sp<Layer> normalLayer;
     switch (flags & eFXSurfaceMask) {
         case eFXSurfaceNormal:
@@ -2452,7 +2452,7 @@ status_t SurfaceFlinger::captureScreenImplLocked(DisplayID dpy,
     sh = (!sh) ? hw_h : sh;
     const size_t size = sw * sh * 4;
 
-    //ALOGD("screenshot: sw=%d, sh=%d, minZ=%d, maxZ=%d",
+    //LOGD("screenshot: sw=%d, sh=%d, minZ=%d, maxZ=%d",
     //        sw, sh, minLayerZ, maxLayerZ);
 
     // make sure to clear all GL error flags
@@ -2548,7 +2548,7 @@ status_t SurfaceFlinger::captureScreenImplLocked(DisplayID dpy,
 
     hw.compositionComplete();
 
-    // ALOGD("screenshot: result = %s", result<0 ? strerror(result) : "OK");
+    // LOGD("screenshot: result = %s", result<0 ? strerror(result) : "OK");
 
     return result;
 }

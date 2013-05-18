@@ -502,7 +502,7 @@ void NativeInputManager::ensureSpriteControllerLocked() {
 void NativeInputManager::notifySwitch(nsecs_t when, int32_t switchCode,
         int32_t switchValue, uint32_t policyFlags) {
 #if DEBUG_INPUT_DISPATCHER_POLICY
-    ALOGD("notifySwitch - when=%lld, switchCode=%d, switchValue=%d, policyFlags=0x%x",
+    LOGD("notifySwitch - when=%lld, switchCode=%d, switchValue=%d, policyFlags=0x%x",
             when, switchCode, switchValue, policyFlags);
 #endif
 
@@ -519,7 +519,7 @@ void NativeInputManager::notifySwitch(nsecs_t when, int32_t switchCode,
 
 void NativeInputManager::notifyConfigurationChanged(nsecs_t when) {
 #if DEBUG_INPUT_DISPATCHER_POLICY
-    ALOGD("notifyConfigurationChanged - when=%lld", when);
+    LOGD("notifyConfigurationChanged - when=%lld", when);
 #endif
 
     JNIEnv* env = jniEnv();
@@ -531,7 +531,7 @@ void NativeInputManager::notifyConfigurationChanged(nsecs_t when) {
 nsecs_t NativeInputManager::notifyANR(const sp<InputApplicationHandle>& inputApplicationHandle,
         const sp<InputWindowHandle>& inputWindowHandle) {
 #if DEBUG_INPUT_DISPATCHER_POLICY
-    ALOGD("notifyANR");
+    LOGD("notifyANR");
 #endif
 
     JNIEnv* env = jniEnv();
@@ -556,7 +556,7 @@ nsecs_t NativeInputManager::notifyANR(const sp<InputApplicationHandle>& inputApp
 
 void NativeInputManager::notifyInputChannelBroken(const sp<InputWindowHandle>& inputWindowHandle) {
 #if DEBUG_INPUT_DISPATCHER_POLICY
-    ALOGD("notifyInputChannelBroken");
+    LOGD("notifyInputChannelBroken");
 #endif
 
     JNIEnv* env = jniEnv();
@@ -829,14 +829,14 @@ void NativeInputManager::handleInterceptActions(jint wmActions, nsecs_t when,
         uint32_t& policyFlags) {
     if (wmActions & WM_ACTION_GO_TO_SLEEP) {
 #if DEBUG_INPUT_DISPATCHER_POLICY
-        ALOGD("handleInterceptActions: Going to sleep.");
+        LOGD("handleInterceptActions: Going to sleep.");
 #endif
         android_server_PowerManagerService_goToSleep(when);
     }
 
     if (wmActions & WM_ACTION_POKE_USER_ACTIVITY) {
 #if DEBUG_INPUT_DISPATCHER_POLICY
-        ALOGD("handleInterceptActions: Poking user activity.");
+        LOGD("handleInterceptActions: Poking user activity.");
 #endif
         android_server_PowerManagerService_userActivity(when, POWER_MANAGER_BUTTON_EVENT);
     }
@@ -845,7 +845,7 @@ void NativeInputManager::handleInterceptActions(jint wmActions, nsecs_t when,
         policyFlags |= POLICY_FLAG_PASS_TO_USER;
     } else {
 #if DEBUG_INPUT_DISPATCHER_POLICY
-        ALOGD("handleInterceptActions: Not passing key to user.");
+        LOGD("handleInterceptActions: Not passing key to user.");
 #endif
     }
 }

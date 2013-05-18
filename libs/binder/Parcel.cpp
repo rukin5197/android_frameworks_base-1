@@ -104,7 +104,7 @@ void acquire_object(const sp<ProcessState>& proc,
         }
     }
 
-    ALOGD("Invalid object type 0x%08lx", obj.type);
+    LOGD("Invalid object type 0x%08lx", obj.type);
 }
 
 void release_object(const sp<ProcessState>& proc,
@@ -716,7 +716,7 @@ status_t Parcel::writeNativeHandle(const native_handle* handle)
         err = writeDupFileDescriptor(handle->data[i]);
 
     if (err != NO_ERROR) {
-        ALOGD("write native handle, write dup fd failed");
+        LOGD("write native handle, write dup fd failed");
         return err;
     }
     err = write(handle->data + handle->numFds, sizeof(int)*handle->numInts);
